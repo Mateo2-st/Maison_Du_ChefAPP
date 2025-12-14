@@ -9,7 +9,7 @@ import {
     deleteDetallesByPedido
 } from "../models/ventasModel.js";
 
-/* ----------------------- OBTENER TODOS LOS PEDIDOS ----------------------- */
+// Obtener todos los pedidos
 export const listPedidos = async (req, res) => {
     try {
         const pedidos = await getAllPedidos();
@@ -20,7 +20,7 @@ export const listPedidos = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER PEDIDO POR ID ----------------------- */
+// Obtener pedido ID
 export const getPedido = async (req, res) => {
     try {
         const { id } = req.params;
@@ -37,7 +37,7 @@ export const getPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR PEDIDO ----------------------- */
+// Crear Pedido
 export const addPedido = async (req, res) => {
     try {
         const { id_usuario, direccion, fechaPedido, estado, detalles } = req.body;
@@ -65,7 +65,7 @@ export const addPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR PEDIDO ----------------------- */
+// Actualizar pedido
 export const editPedido = async (req, res) => {
     try {
         const { id } = req.params;
@@ -96,7 +96,7 @@ export const editPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR PEDIDO ----------------------- */
+// Eliminar pedido
 export const removePedido = async (req, res) => {
     try {
         const { id } = req.params;
