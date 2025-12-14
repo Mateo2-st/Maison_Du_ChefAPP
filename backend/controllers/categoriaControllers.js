@@ -7,7 +7,7 @@ import {
     deleteCategory
 } from "../models/categoriaModels.js";
 
-/* ----------------------- OBTENER TODAS LAS CATEGORÍAS ----------------------- */
+// Obtener todas las categorias
 export const listCategories = async (req, res) => {
     try {
         const categories = await getAllCategories();
@@ -18,7 +18,7 @@ export const listCategories = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER CATEGORÍA POR ID ----------------------- */
+// Obtener categoria por ID
 export const getCategory = async (req, res) => {
     try {
         const { id } = req.params;
@@ -35,7 +35,7 @@ export const getCategory = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR CATEGORÍA ----------------------- */
+// Crear categoria
 export const addCategory = async (req, res) => {
     try {
         const { nombreCategoria } = req.body;
@@ -52,7 +52,7 @@ export const addCategory = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR CATEGORÍA ----------------------- */
+// Actualizar
 export const editCategory = async (req, res) => {
     try {
         const { id } = req.params;
@@ -71,7 +71,7 @@ export const editCategory = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR CATEGORÍA ----------------------- */
+// Eliminar
 export const removeCategory = async (req, res) => {
     try {
         const { id } = req.params;
