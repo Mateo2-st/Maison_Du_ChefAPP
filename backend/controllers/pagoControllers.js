@@ -1,7 +1,7 @@
 // controllers/pagoControllers.js
 import { createPago, getPagoByPedido } from "../models/ventasModel.js";
 
-/* ----------------------- REGISTRAR PAGO ----------------------- */
+// Registro pago
 export const addPago = async (req, res) => {
     try {
         const { id_pedido, metodo, monto, fecha } = req.body;
@@ -18,7 +18,7 @@ export const addPago = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER PAGO POR PEDIDO ----------------------- */
+// Pago por pedido
 export const getPago = async (req, res) => {
     try {
         const { id_pedido } = req.params;
