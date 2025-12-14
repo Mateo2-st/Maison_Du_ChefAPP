@@ -7,7 +7,7 @@ import {
     deleteProduct
 } from "../models/productModels.js";
 
-/* ----------------------- OBTENER TODOS LOS PRODUCTOS ----------------------- */
+/// Obtener all productos
 export const listProducts = async (req, res) => {
     try {
         const products = await getAllProducts();
@@ -18,7 +18,7 @@ export const listProducts = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER PRODUCTO POR ID ----------------------- */
+// Obtener producto ID
 export const getProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -35,7 +35,7 @@ export const getProduct = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR PRODUCTO ----------------------- */
+// Crear producto
 export const addProduct = async (req, res) => {
     try {
         const { nombreProducto, descripcion, precio, disponible, id_restaurante, id_categoria } = req.body;
@@ -60,7 +60,7 @@ export const addProduct = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR PRODUCTO ----------------------- */
+// Actualizar producto
 export const editProduct = async (req, res) => {
     try {
         const { id } = req.params;
@@ -87,7 +87,7 @@ export const editProduct = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR PRODUCTO ----------------------- */
+// Eliminar producto
 export const removeProduct = async (req, res) => {
     try {
         const { id } = req.params;
