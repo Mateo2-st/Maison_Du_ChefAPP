@@ -1,90 +1,67 @@
-// controllers/categoriaControllers.js
+// backend/controllers/categoriaControllers.js
 import {
-    getAllCategories,
-    getCategoryById,
-    createCategory,
-    updateCategory,
-    deleteCategory
+  getAllCategorias,
+  getCategoriaById,
+  createCategoria,
+  updateCategoria,
+  deleteCategoria
 } from "../models/categoriaModels.js";
 
-/* ----------------------- OBTENER TODAS LAS CATEGORÍAS ----------------------- */
 export const listCategories = async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-        return res.json(categories);
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+  try {
+    const rows = await getAllCategorias();
+    return res.json(rows);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error del servidor" });
+  }
 };
 
-/* ----------------------- OBTENER CATEGORÍA POR ID ----------------------- */
 export const getCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const category = await getCategoryById(id);
-
-        if (!category) {
-            return res.status(404).json({ message: "Categoría no encontrada" });
-        }
-
-        return res.json(category);
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+  try {
+    const { id } = req.params;
+    const cat = await getCategoriaById(id);
+    if (!cat) return res.status(404).json({ message: "Categoría no encontrada" });
+    return res.json(cat);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error del servidor" });
+  }
 };
 
-/* ----------------------- CREAR CATEGORÍA ----------------------- */
 export const addCategory = async (req, res) => {
-    try {
-        const { nombreCategoria } = req.body;
-
-        if (!nombreCategoria) {
-            return res.status(400).json({ message: "Falta el nombre de la categoría" });
-        }
-
-        const id = await createCategory({ nombreCategoria });
-        return res.status(201).json({ message: "Categoría creada", id });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+  try {
+    const { nombreCategoria } = req.body;
+    if (!nombreCategoria) return res.status(400).json({ message: "Falta nombreCategoria" });
+    const cat = await createCategoria({ nombreCategoria });
+    return res.status(201).json(cat);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error del servidor" });
+  }
 };
 
-/* ----------------------- ACTUALIZAR CATEGORÍA ----------------------- */
 export const editCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { nombreCategoria } = req.body;
-
-        const updated = await updateCategory(id, { nombreCategoria });
-
-        if (!updated) {
-            return res.status(404).json({ message: "Categoría no encontrada o sin cambios" });
-        }
-
-        return res.json({ message: "Categoría actualizada" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+  try {
+    const { id } = req.params;
+    const { nombreCategoria } = req.body;
+    const ok = await updateCategoria(id, { nombreCategoria });
+    if (!ok) return res.status(404).json({ message: "Categoría no encontrada" });
+    return res.json({ message: "Categoría actualizada" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error del servidor" });
+  }
 };
 
-/* ----------------------- ELIMINAR CATEGORÍA ----------------------- */
 export const removeCategory = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const deleted = await deleteCategory(id);
-
-        if (!deleted) {
-            return res.status(404).json({ message: "Categoría no encontrada" });
-        }
-
-        return res.json({ message: "Categoría eliminada" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+  try {
+    const { id } = req.params;
+    const ok = await deleteCategoria(id);
+    if (!ok) return res.status(404).json({ message: "Categoría no encontrada" });
+    return res.json({ message: "Categoría eliminada" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error del servidor" });
+  }
 };

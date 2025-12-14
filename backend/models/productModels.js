@@ -1,99 +1,99 @@
-// models/productModels.js
-import pool from "../db.js";
+import pool from "../config/db.js";
 
-/* Obtener todos los productos con su categoría y restaurante*/
-export const getAllProducts = async () => {
-    const [rows] = await pool.query(`
-        SELECT p.idProducto, p.nombreProducto, p.descripcion, p.precio, 
-        p.disponible, 
-        r.nombreRestaurante AS restaurante,
-        c.nombreCategoria AS categoria
-        FROM productos p
-        INNER JOIN restaurantes r ON p.id_restaurante = r.idRestaurante
-        INNER JOIN categorias c ON p.id_categoria = c.idCategoria
-        ORDER BY p.idProducto DESC
-    `);
-    return rows;
+/* =========================
+   TODOS LOS PRODUCTOS (PÚBLICO / ADMIN)
+========================= */
+export const getAllProductsDB = async () => {
+  const [rows] = await pool.query(`
+    SELECT 
+      p.idProducto,
+      p.nombreProducto,
+      p.precio,
+      p.id_restaurante,
+      r.nombreRestaurante,
+      c.nombreCategoria
+    FROM productos p
+    INNER JOIN restaurantes r ON p.id_restaurante = r.idRestaurante
+    INNER JOIN categorias c ON p.id_categoria = c.idCategoria
+    ORDER BY p.idProducto DESC
+  `);
+  return rows;
 };
 
-/* Obtener un producto por ID*/
-export const getProductById = async (id) => {
-    const [rows] = await pool.query(`
-        SELECT p.*, 
-        r.nombreRestaurante AS restaurante,
-        c.nombreCategoria AS categoria
-        FROM productos p
-        INNER JOIN restaurantes r ON p.id_restaurante = r.idRestaurante
-        INNER JOIN categorias c ON p.id_categoria = c.idCategoria
-        WHERE p.idProducto = ?
-    `, [id]);
+/* =========================
+   PRODUCTOS POR DUEÑO (VENDEDOR)
+========================= */
+export const getProductsByDueno = async (idUsuario) => {
+  const [rows] = await pool.query(`
+    SELECT 
+      p.idProducto,
+      p.nombreProducto,
+      p.precio,
+      p.id_restaurante,
+      r.nombreRestaurante,
+      c.nombreCategoria
+    FROM productos p
+    INNER JOIN restaurantes r ON p.id_restaurante = r.idRestaurante
+    INNER JOIN categorias c ON p.id_categoria = c.idCategoria
+    WHERE r.id_usuario = ?
+    ORDER BY p.idProducto DESC
+  `, [idUsuario]);
 
-    return rows[0];
+  return rows;
 };
 
-/* Crear un producto*/
-export const createProduct = async (data) => {
-    const {
-        nombreProducto,
-        descripcion,
-        precio,
-        disponible = "Si",
-        id_restaurante,
-        id_categoria
-    } = data;
-
-    const [result] = await pool.query(`
-        INSERT INTO productos 
-            (nombreProducto, descripcion, precio, disponible, id_restaurante, id_categoria)
-        VALUES (?, ?, ?, ?, ?, ?)
-    `, [
-        nombreProducto,
-        descripcion,
-        precio,
-        disponible,
-        id_restaurante,
-        id_categoria
-    ]);
-
-    return { id: result.insertId, ...data };
+/* =========================
+   PRODUCTO POR ID
+========================= */
+export const getProductByIdDB = async (id) => {
+  const [rows] = await pool.query(
+    "SELECT * FROM productos WHERE idProducto = ?",
+    [id]
+  );
+  return rows[0];
 };
 
-/* Actualizar un producto*/
-export const updateProduct = async (id, data) => {
-    const {
-        nombreProducto,
-        descripcion,
-        precio,
-        disponible,
-        id_restaurante,
-        id_categoria
-    } = data;
+/* =========================
+   CREAR PRODUCTO
+========================= */
+export const createProductDB = async ({
+  nombreProducto,
+  precio,
+  id_restaurante,
+  id_categoria
+}) => {
+  const [result] = await pool.query(
+    `INSERT INTO productos
+     (nombreProducto, precio, disponible, id_restaurante, id_categoria)
+     VALUES (?, ?, 1, ?, ?)`,
+    [nombreProducto, precio, id_restaurante, id_categoria]
+  );
 
-    const [result] = await pool.query(`
-        UPDATE productos 
-        SET nombreProducto = ?, descripcion = ?, precio = ?, disponible = ?, 
-            id_restaurante = ?, id_categoria = ?
-        WHERE idProducto = ?
-    `, [
-        nombreProducto,
-        descripcion,
-        precio,
-        disponible,
-        id_restaurante,
-        id_categoria,
-        id
-    ]);
-
-    return result.affectedRows > 0;
+  return {
+    idProducto: result.insertId,
+    nombreProducto,
+    precio
+  };
 };
 
+/* =========================
+   ACTUALIZAR
+========================= */
+export const updateProductDB = async (id, data) => {
+  const [result] = await pool.query(
+    "UPDATE productos SET ? WHERE idProducto = ?",
+    [data, id]
+  );
+  return result;
+};
 
-/* Eliminar un producto*/
-
-export const deleteProduct = async (id) => {
-    const [result] = await pool.query(`
-        DELETE FROM productos WHERE idProducto = ?
-    `, [id]);
-
-    return result.affectedRows > 0;
+/* =========================
+   ELIMINAR
+========================= */
+export const deleteProductDB = async (id) => {
+  const [result] = await pool.query(
+    "DELETE FROM productos WHERE idProducto = ?",
+    [id]
+  );
+  return result;
 };

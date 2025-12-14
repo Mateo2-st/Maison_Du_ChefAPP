@@ -6,7 +6,6 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  overflow-x: hidden;
 }
 
 .seguimiento-container {
@@ -51,16 +50,28 @@ h1 {
 }
 
 .progreso li.activo {
-  border-bottom: 3px solid #71350e78;
+  border-bottom: 3px solid #4CAF50;
   font-weight: bold;
-  color: #71350e78;
+  color: #4CAF50;
+}
+
+.mapa {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.mapa img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
 button {
   display: block;
   margin: 30px auto 0;
   padding: 10px 20px;
-  background-color: #71350e78;
+  background-color: #4CAF50;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -69,7 +80,7 @@ button {
 }
 
 button:hover {
-  background-color: #71350e78;
+  background-color: #45a049;
 }
 
 .top-header {
@@ -83,16 +94,13 @@ button:hover {
 }
 
 .top-navbar {
-  width: 100%;      /* 🔥 Se adapta a la pantalla */
-  max-width: 100%;  /* 🔥 Evita overflow horizontal */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 5px;
+  padding: 0 10px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* izquierda y derecha separadas */
   align-items: center;
-  margin-right: 100px;
 }
-
 
 .hamburger-btn {
   background: transparent;
@@ -107,15 +115,6 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 16px;
-  justify-content: center;
-}
-
-.left-controls {
-  display: flex;
-  align-items: center;
-  gap: 1px;
-  margin-bottom: 28px;
-  margin-right: 3px;
 }
 
 .top-header .search-bar {
@@ -151,5 +150,4 @@ button:hover {
   text-decoration: none;
   font-size: 14px;
   white-space: nowrap;
-  padding: 25px;
 }

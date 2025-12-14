@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin | Configuración</title>
+  <link rel="stylesheet" href="../css/configuracion.css"/>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__title">
+    <h1>Configuración</h1>
+    <p>Gestión de usuarios y seguridad</p>
+  </div>
+
+  <div class="topbar__actions">
+    <button class="btn btn--ghost" id="btnVolver">Regresar</button>
+    <button class="btn btn--primary" id="btnRefrescar">Refrescar</button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- PANEL IZQUIERDO -->
+  <section class="panel panel--left">
+    <nav class="tabs" aria-label="Secciones de configuración">
+      <button class="tab active" type="button" data-tab="usuarios">Usuarios</button>
+      <button class="tab" type="button" data-tab="seguridad">Seguridad</button>
+    </nav>
+
+    <!-- TAB: USUARIOS -->
+    <div class="tab-content active" id="tab-usuarios">
+      <div class="filters">
+        <div class="field">
+          <label>Buscar</label>
+          <input id="searchText" type="text" placeholder="Nombre o correo..." autocomplete="off"/>
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <select id="filterEstado">
+            <option value="">Todos</option>
+            <option value="activo">Activo</option>
+            <option value="bloqueado">Bloqueado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Tabla de usuarios">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Estado</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyUsuarios">
+            <!-- JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hint">
+        Selecciona un usuario para editar su información o restablecer contraseña.
+      </div>
+    </div>
+
+    <!-- TAB: SEGURIDAD -->
+    <div class="tab-content" id="tab-seguridad">
+      <div class="section-title">
+        <h2>Políticas de seguridad</h2>
+        <p>Estos ajustes se guardan si tu backend tiene el endpoint de configuración.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h3>Contraseña fuerte</h3>
+          <p>Recomendado: mínimo de caracteres, mayúsculas y números.</p>
+          <div class="mini-row">
+            <label class="switch">
+              <input type="checkbox" id="policyStrongPassword" />
+              <span class="slider"></span>
+            </label>
+            <span>Exigir contraseña fuerte</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Bloqueo por intentos</h3>
+          <p>Bloquea usuarios tras varios intentos fallidos.</p>
+          <div class="mini-row">
+            <label class="switch">
+              <input type="checkbox" id="policyLockout" />
+              <span class="slider"></span>
+            </label>
+            <span>Activar bloqueo</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Sesiones</h3>
+          <p>Define la expiración del token.</p>
+          <div class="field">
+            <label>Expiración de sesión</label>
+            <input id="jwtExpire" type="text" placeholder="Ej: 2h, 1d, 30m" autocomplete="off"/>
+          </div>
+
+          <div class="row">
+            <button class="btn btn--primary" id="btnGuardarSeguridad" type="button">Guardar</button>
+            <button class="btn btn--ghost" id="btnLimpiarSeguridad" type="button">Limpiar</button>
+          </div>
+
+          <small class="muted">Si tu backend no lo soporta, se mostrará un aviso.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL DERECHO: EDICIÓN -->
+  <aside class="panel panel--right" id="drawer">
+    <div class="drawer-head">
+      <div>
+        <h2 id="drawerTitle">Editar usuario</h2>
+        <p class="muted" id="drawerSubtitle">Selecciona un usuario en la tabla.</p>
+      </div>
+      <button class="btn btn--ghost" id="btnCerrarDrawer" type="button" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <form id="formUsuario" class="form" autocomplete="off">
+        <input type="hidden" id="userId"/>
+
+        <div class="field">
+          <label>Nombre</label>
+          <input id="userNombre" type="text" placeholder="Nombre" required />
+        </div>
+
+        <div class="field">
+          <label>Correo</label>
+          <input id="userCorreo" type="email" placeholder="correo@dominio.com" required />
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <select id="userEstado" required>
+            <option value="activo">Activo</option>
+            <option value="bloqueado">Bloqueado</option>
+          </select>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 class="mini-title">Restablecer contraseña</h3>
+
+        <div class="field">
+          <label>Nueva contraseña</label>
+          <input id="userPass1" type="password" placeholder="Nueva contraseña" />
+        </div>
+
+        <div class="field">
+          <label>Confirmar contraseña</label>
+          <input id="userPass2" type="password" placeholder="Confirmar contraseña" />
+        </div>
+
+        <div class="row">
+          <button class="btn btn--primary" type="submit">Guardar cambios</button>
+          <button class="btn btn--ghost" type="button" id="btnLimpiarPass">Limpiar</button>
+        </div>
+
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </aside>
+
+</main>
+
+<script src="../js/configuracion.js"></script>
+</body>
+</html>

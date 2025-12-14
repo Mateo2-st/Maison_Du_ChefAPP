@@ -1,8 +1,6 @@
-// controllers/reseniaController.js
-import pool from "../db.js";
 
-/* ----------------------- OBTENER TODAS LAS RESEÑAS ----------------------- */
-export const listResenas = async (req, res) => {
+// Obtener reseña
+export const listResenias = async (req, res) => {
     try {
         const [rows] = await pool.query(`
             SELECT r.*, u.nombre AS usuario, p.nombreProducto AS producto
@@ -18,8 +16,8 @@ export const listResenas = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER RESEÑA POR ID ----------------------- */
-export const getResena = async (req, res) => {
+// Obtener reseña por ID
+export const getResenia = async (req, res) => {
     try {
         const { id } = req.params;
         const [rows] = await pool.query(`
@@ -41,8 +39,8 @@ export const getResena = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR RESEÑA ----------------------- */
-export const addResena = async (req, res) => {
+// Crear reseña
+export const addResenia = async (req, res) => {
     try {
         const { id_usuario, id_producto, comentario, calificacion, fecha } = req.body;
 
@@ -71,8 +69,8 @@ export const addResena = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR RESEÑA ----------------------- */
-export const editResena = async (req, res) => {
+// Actualizar reseña
+export const editResenia = async (req, res) => {
     try {
         const { id } = req.params;
         const { comentario, calificacion } = req.body;
@@ -95,8 +93,8 @@ export const editResena = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR RESEÑA ----------------------- */
-export const removeResena = async (req, res) => {
+// Eliminar reseña
+export const removeResenia = async (req, res) => {
     try {
         const { id } = req.params;
 

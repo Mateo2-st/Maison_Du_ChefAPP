@@ -1,0 +1,153 @@
+/* ===== TIPOGRAFÍA GENERAL ===== */
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+  background: #f7efe7;
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.admin-sidebar {
+  width: 260px;
+  background: #5a2e13;
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+  box-shadow: 4px 0 10px #00000025;
+}
+
+.admin-logo img {
+  width: 140px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.admin-logo h2 {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.admin-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+.admin-menu li {
+  margin-bottom: 15px;
+}
+
+.admin-menu a {
+  text-decoration: none;
+  color: white;
+  padding: 12px;
+  display: block;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.admin-menu a:hover,
+.admin-menu a.active {
+  background: #8c4b2c;
+}
+
+/* ===== BOTÓN LOGOUT ===== */
+.admin-logout {
+  margin-top: 30px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #c0392b;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.admin-logout:hover {
+  background: #e74c3c;
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+.admin-main {
+  flex-grow: 1;
+  padding: 40px;
+}
+
+.admin-title {
+  margin: 0;
+  font-size: 32px;
+  color: #5a2e13;
+}
+
+.admin-subtitle {
+  margin-top: 5px;
+  color: #7a5338;
+}
+
+/* FILTRO */
+.filter-box {
+  margin: 25px 0;
+}
+
+.admin-select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #8c4b2c;
+  font-size: 16px;
+}
+
+/* ===== TABLA ===== */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px #00000025;
+}
+
+.admin-table th {
+  background: #8c4b2c;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+.admin-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table tr:hover {
+  background: #f6ece2;
+}
+
+.admin-btn {
+  background: #8c4b2c;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.admin-btn:hover {
+  background: #b56e40;
+}
+
+.admin-btn-admin {
+  background: #b52b27;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-btn-admin:hover {
+  background: #d9534f;
+}

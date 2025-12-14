@@ -1,0 +1,135 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4e9dd; /* tono cálido tipo comida */
+}
+
+/* ===== Sidebar ===== */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  background: #8c4b2c; /* café rojizo estilo food */
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.admin-logo {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-logo img {
+  width: 80px;
+}
+
+.admin-logo h2 {
+  margin: 10px 0 0;
+}
+
+/* Menu */
+.admin-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-menu li {
+  margin: 15px 0;
+}
+
+.admin-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  display: block;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.admin-menu a:hover,
+.admin-menu .active {
+  background: #b56e40;
+}
+
+/* Logout button */
+.admin-logout {
+  margin-top: 40px;
+  width: 100%;
+  padding: 12px;
+  background: #d9534f;
+  border: none;
+  font-size: 18px;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.admin-logout:hover {
+  background: #c9302c;
+}
+
+/* ===== Main content ===== */
+.admin-main {
+  margin-left: 270px;
+  padding: 30px;
+}
+
+.admin-title {
+  font-size: 32px;
+  color: #8c4b2c;
+}
+
+.admin-subtitle {
+  margin-top: -10px;
+  margin-bottom: 30px;
+  color: #6c3d27;
+  font-size: 18px;
+}
+
+/* Tarjetas */
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.admin-card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px #00000026;
+}
+
+.admin-card i {
+  font-size: 45px;
+  color: #b56e40;
+}
+
+.admin-card h3 {
+  margin-top: 10px;
+  font-size: 22px;
+  color: #8c4b2c;
+}
+
+.admin-card p {
+  margin: 5px 0 20px;
+  font-size: 15px;
+}
+
+.admin-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #8c4b2c;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.admin-btn:hover {
+  background: #b56e40;
+}

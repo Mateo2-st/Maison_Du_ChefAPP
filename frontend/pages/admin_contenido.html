@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurantes & Platos - Admin</title>
+  <link rel="stylesheet" href="../css/admin_restaurante.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="admin-sidebar">
+  <div class="admin-logo">
+    <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
+    <h2>Administrador</h2>
+  </div>
+  <ul class="admin-menu">
+    <li><a href="cuenta_administrador.html"><i class="fa-solid fa-gauge"></i> Panel General</a></li>
+    <li><a href="admin_personal.html"><i class="fa-solid fa-user-gear"></i> Gestión de Personal</a></li>
+    <li><a class="active" href="admin_contenido.html"><i class="fa-solid fa-bowl-food"></i> Restaurantes</a></li>
+    <li><a href="informes_admin.html"><i class="fa-solid fa-chart-line"></i> Informes de ventas</a></li>
+    <li><a href="configuracion.html"><i class="fa-solid fa-wrench"></i> Configuración</a></li>
+  </ul>
+  <button id="btnLogout" class="admin-logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</button>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<main class="admin-main">
+  <h1 class="admin-title">Restaurantes</h1>
+  <p class="admin-subtitle">Administra los restaurantes y su contenido visual</p>
+
+  <button id="btnNuevoRestaurante" class="btn-add">
+    <i class="fa-solid fa-plus"></i> Nuevo Restaurante
+  </button>
+
+  <!-- LISTA DE RESTAURANTES -->
+  <table class="admin-table" id="tablaRestaurantes">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Teléfono</th>
+        <th>ID Usuario</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- MODAL CREAR / EDITAR RESTAURANTE -->
+  <div id="modalRestaurante" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="modalTitle">Nuevo Restaurante</h2>
+
+      <input type="text" id="restNombre" placeholder="Nombre del restaurante">
+      <input type="text" id="restDireccion" placeholder="Dirección">
+      <input type="text" id="restTelefono" placeholder="Teléfono">
+      <input type="number" id="restUsuario" placeholder="ID Usuario (obligatorio)">
+      <input type="text" id="restImagen" placeholder="URL imagen (opcional)">
+
+      <button id="guardarRestaurante" class="save-btn">Guardar</button>
+      <button id="cerrarModalRest" class="close-btn">Cerrar</button>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("mdc_token");
+  if (!token) return window.location.href = "login.html";
+
+  const modal = document.getElementById("modalRestaurante");
+  const btnGuardar = document.getElementById("guardarRestaurante");
+  const btnCerrar = document.getElementById("cerrarModalRest");
+
+  const inputNombre = document.getElementById("restNombre");
+  const inputDireccion = document.getElementById("restDireccion");
+  const inputTelefono = document.getElementById("restTelefono");
+  const inputUsuario = document.getElementById("restUsuario");
+  const inputImagen = document.getElementById("restImagen");
+
+  const tablaBody = document.querySelector("#tablaRestaurantes tbody");
+
+  let editRestauranteId = null; // Para saber si estamos editando
+
+  // Abrir modal para crear nuevo restaurante
+  document.getElementById("btnNuevoRestaurante").addEventListener("click", () => {
+    editRestauranteId = null; // modo creación
+    modal.classList.remove("hidden");
+    document.getElementById("modalTitle").textContent = "Nuevo Restaurante";
+    inputNombre.value = "";
+    inputDireccion.value = "";
+    inputTelefono.value = "";
+    inputUsuario.value = "";
+    inputImagen.value = "";
+  });
+
+  // Función para abrir modal en modo edición
+  window.editarRestaurante = (id) => {
+    const restaurante = Array.from(tablaBody.rows).find(r => Number(r.cells[0].textContent) === id);
+    if (!restaurante) return;
+
+    editRestauranteId = id;
+    modal.classList.remove("hidden");
+    document.getElementById("modalTitle").textContent = "Editar Restaurante";
+
+    inputNombre.value = restaurante.cells[1].textContent;
+    inputDireccion.value = restaurante.cells[2].textContent;
+    inputTelefono.value = restaurante.cells[3].textContent;
+    inputUsuario.value = restaurante.cells[4].textContent;
+    inputImagen.value = ""; // opcional
+  };
+
+  // Cerrar modal
+  btnCerrar.addEventListener("click", () => modal.classList.add("hidden"));
+
+  // Guardar (crear o editar)
+  btnGuardar.addEventListener("click", async () => {
+    const nombreRestaurante = inputNombre.value.trim();
+    const direccion = inputDireccion.value.trim();
+    const telefono = inputTelefono.value.trim();
+    const id_usuario = parseInt(inputUsuario.value);
+    const imagen = inputImagen.value.trim() || null;
+
+    if (!nombreRestaurante || !id_usuario) {
+      Swal.fire("Error", "Nombre y ID Usuario son obligatorios", "error");
+      return;
+    }
+
+    try {
+      const url = editRestauranteId
+        ? `http://localhost:3000/api/restaurantes/${editRestauranteId}`
+        : "http://localhost:3000/api/restaurantes";
+
+      const method = editRestauranteId ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ nombreRestaurante, direccion, telefono, id_usuario, imagen })
+      });
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Error backend:", text);
+        throw new Error(editRestauranteId ? "No se pudo actualizar el restaurante" : "No se pudo crear el restaurante");
+      }
+
+      Swal.fire("Éxito", editRestauranteId ? "Restaurante actualizado correctamente" : "Restaurante creado correctamente", "success");
+      modal.classList.add("hidden");
+      cargarRestaurantes();
+      editRestauranteId = null;
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", err.message, "error");
+    }
+  });
+
+  // Eliminar restaurante
+  window.eliminarRestaurante = async (id) => {
+    const confirm = await Swal.fire({
+      title: "Eliminar restaurante?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar"
+    });
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/restaurantes/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("No se pudo eliminar el restaurante");
+      Swal.fire("Eliminado", "Restaurante eliminado correctamente", "success");
+      cargarRestaurantes();
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", err.message, "error");
+    }
+  };
+
+  // Cargar restaurantes
+  async function cargarRestaurantes() {
+    try {
+      const res = await fetch("http://localhost:3000/api/restaurantes", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error("No se pudieron cargar los restaurantes");
+
+      const restaurantes = await res.json();
+      tablaBody.innerHTML = "";
+
+      restaurantes.forEach(r => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${r.idRestaurante}</td>
+          <td>${r.nombreRestaurante}</td>
+          <td>${r.direccion}</td>
+          <td>${r.telefono}</td>
+          <td>${r.id_usuario}</td>
+          <td>
+            <button class="admin-btn" onclick="editarRestaurante(${r.idRestaurante})">Editar</button>
+            <button class="admin-btn-admin" onclick="eliminarRestaurante(${r.idRestaurante})">Eliminar</button>
+          </td>
+        `;
+        tablaBody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error("Error al cargar los restaurantes:", err);
+    }
+  }
+
+  // Cargar al inicio
+  cargarRestaurantes();
+
+  // Logout
+  document.getElementById("btnLogout")?.addEventListener("click", () => {
+    Swal.fire({
+      title: "Cerrar sesión",
+      text: "¿Seguro deseas salir?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "Cancelar"
+    }).then(r => {
+      if (r.isConfirmed) {
+        localStorage.removeItem("mdc_token");
+        window.location.href = "login.html";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>
+

@@ -4,208 +4,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pantalla principal - Maison Du Chef</title>
+
     <link rel="stylesheet" href="../css/catalogo.css">
+    <link rel="stylesheet" href="../css/contacto.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
+
 <body>
-    <header class="barraSuperior">
-        <div class="iconoMenu">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-        <div class="opcionesSuperior">
-            <a href="../pages/cuenta.html"><i class="fa-solid fa-person"></i> Cuenta</a>
-            <a href="../pages/login.html"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesion</a>
-        </div>
-    </header>
 
-    <!--Menu hamburguesa-->
-    <nav class="menuLateral" id="menu-lateral">
-        <div class="logoMenu">
-            <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
-        </div>
-        <button id="cerrar-menu">&#10006;</button>
-        <img src="" alt="">
-        <ul>
-            <li><a href="../pages/catalogo.html">Inicio</a></li>
-            <li><a href="#">Categorías</a></li>
-            <li><a href="../pages/maison.html">Restaurantes</a></li>
-            <li><a href="#unete">Únete a nosotros</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-            <li><a href="../pages/login.html">Cerrar sesión</a></li>
-        </ul>
-    </nav>
-
-    <!--Imagen principal-->
-    <div class="principal">
-        <div class="principalIzquierda">
-        </div>
-        <div class="principalDerecha">
-            <h1>Maison Du Chef</h1>
-            <p>"Cada plato lleva un sueño, tú lo haces posible"</p>
-            <div class="cajaBusqueda">
-                <input type="text" placeholder="Buscar...">
-                <button>Buscar</button>
-            </div>
-        </div>
+<!-- =========================
+     BARRA SUPERIOR
+========================= -->
+<header class="barraSuperior">
+    <div class="iconoMenu">
+        <i class="fa-solid fa-bars"></i>
     </div>
 
-    <!--Categorias-->
-    <div class="categorias">
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/desayuno.png" alt="">
-            </div>
-            <p>Desayunos</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/almuerzo.png" alt="">
-            </div>
-            <p>Almuerzo</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/pastas.png" alt="">
-            </div>
-            <p>Pastas</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/hamburguesa.png" alt="">
-            </div>
-            <p>C. Rápidas</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/bebidas.png" alt="bebidas">
-            </div>
-            <p>Bebidas</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/picadas.png pantalla principal/picadas.png" alt="">
-            </div>
-            <p>Picadas</p>
-            <button>Ver mas</button>
-        </div>
-        <div class="categoria">
-            <div class="circulo">
-                <img src="../imagenes/imagenes pantalla principal/postres.png pantalla principal/pastas.png" alt="">
-            </div>
-            <p>Postres</p>
-            <button>Ver más</button>
+    <div class="opcionesSuperior">
+        <a href="#" id="btnCerrarSesion">
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </a>
+    </div>
+</header>
+
+<!-- =========================
+     MENÚ LATERAL
+========================= -->
+<nav class="menuLateral" id="menu-lateral">
+    <div class="logoMenu">
+        <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
+    </div>
+    <button id="cerrar-menu">&#10006;</button>
+
+    <ul>
+        <li><a href="../pages/catalogo.html">Inicio</a></li>
+        <li><a href="#">Categorías</a></li>
+        <li><a href="../pages/maison.html">Restaurantes</a></li>
+        <li id="menuPedidosDomiciliario" style="display: none;">
+            <a href="../pages/domiciliario_pedidos.html">
+                <i class="fa-solid fa-motorcycle"></i> Pedidos disponibles
+            </a>
+        </li>
+        <li><a href="#unete">Únete a nosotros</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#" id="cerrarSesion2">Cerrar sesión</a></li>
+    </ul>
+</nav>
+
+<!-- =========================
+     IMAGEN PRINCIPAL
+========================= -->
+<div class="principal">
+    <div class="principalIzquierda"></div>
+
+    <div class="principalDerecha">
+        <h1>Maison Du Chef</h1>
+        <p>"Cada plato lleva un sueño, tú lo haces posible"</p>
+
+        <div class="cajaBusqueda">
+            <input id="inputBusqueda" type="text" placeholder="Buscar...">
+            <button id="btnBuscar">Buscar</button>
         </div>
     </div>
+</div>
 
-    <!--Restaurantes destacados-->
-    <div class="restaurantes">
-        <h2>Restaurantes destacados del momento</h2>
-        <div class="rejillaRestaurantes">
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/crepes.png" alt="Restaurante 1">
-                </div>
-                <button>Ver mas</button>
-            </div>
+<!-- =========================
+     CATEGORÍAS
+========================= -->
+<div class="categorias">
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/desayuno.png"></div>
+        <p>Desayunos</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/almuerzo.png"></div>
+        <p>Almuerzo</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/pastas.png"></div>
+        <p>Pastas</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/hamburguesa.png"></div>
+        <p>C. Rápidas</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/bebidas.png"></div>
+        <p>Bebidas</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/picadas.png"></div>
+        <p>Picadas</p>
+        <button>Ver más</button>
+    </div>
+    <div class="categoria">
+        <div class="circulo"><img src="../imagenes/imagenes pantalla principal/postres.png"></div>
+        <p>Postres</p>
+        <button>Ver más</button>
+    </div>
+</div>
 
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/dominos.png" alt="Restaurante 2">
-                </div>
-                <button>Ver mas</button>
-            </div>
-            
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/juanvaldez.png" alt="Restaurante 3">
-                </div>
-                <button>Ver mas</button>
-            </div>
-            
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/papa.png" alt="Restaurante 4">
-                </div>
-                <button>Ver mas</button>
-            </div>
-        
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/qbano.png" alt="Restaurante 5">
-                </div>
-                <button>Ver mas</button>
-            </div>
-            
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/srbuñuelo.png" alt="Restaurante 6">
-                </div>
-                <button>Ver mas</button>
-            </div>
-            
-            
-            <div class="restaurante">
-                <div class="circuloRestaurante">
-                    <img src="../imagenes/imagenes restaurantes/subway.png" alt="Restaurante 7">
-                </div>
-                <button>Ver mas</button>
-            </div>
-        </div>
+<!-- =========================
+     RESTAURANTES
+========================= -->
+<div class="restaurantes">
+    <h2>Restaurantes destacados del momento</h2>
 
-    <!--Apartado de unete a nosotros-->
-    <h2 class="marca">Unete a <span>Maison Du Chef</span></h2>
-    <div id="unete" class="unete">
-        
-            <div class="tarjeta">
-                <img src="../imagenes/imagenes pantalla principal/dueniorestaurante.jpg" alt="Registra tu restaurante">
-                <h3>Registra tu restaurante</h3>
-                <p>Conecta tu restaurante con cientos de clientes cada dia y haz crecer tu negocio</p>
-                <button>Conocer mas</button>
-            </div>
-        
-        <div class="tarjeta">
-            <img src="../imagenes/imagenes pantalla principal/domiciliario.jpg" alt="Unete a nuestros domiciliarios">
-            <h3>Conviertete en domiciliario</h3>
-            <p>Unete a nuestro grupo de domiciliarios y conviertete en uno de los beneficiarios de nuestros beneficios</p>
-            <button>Conocer más</button>
-        </div>
+    <div class="rejillaRestaurantes">
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/crepes.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/dominos.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/juanvaldez.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/papa.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/qbano.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/srbuñuelo.png"></div><button>Ver más</button></div>
+        <div class="restaurante"><div class="circuloRestaurante"><img src="../imagenes/imagenes restaurantes/subway.png"></div><button>Ver más</button></div>
+    </div>
+</div>
 
-        <div class="tarjeta">
-            <img src="../imagenes/imagenes pantalla principal/asistenciaalcliente.jpg" alt="Asistencia al cliente">
-            <h3>Asistencia al cliente</h3>
-            <p>¿Necesitas ayuda? Contacta con uno de nuestros asesores/administradores</p>
-            <button>Conocer mas</button>
-        </div>
+<!-- =========================
+     ÚNETE
+========================= -->
+<h2 class="marca">Únete a <span>Maison Du Chef</span></h2>
+<div id="unete" class="unete">
+
+    <!-- REGISTRO RESTAURANTE -->
+    <div class="tarjeta">
+        <img src="../imagenes/imagenes pantalla principal/dueniorestaurante.jpg">
+        <h3>Registra tu restaurante</h3>
+        <p>Conecta tu restaurante con cientos de clientes.</p>
+        <a href="../pages/registro_restaurante.html" class="btn">
+            Conocer más
+        </a>
     </div>
 
-    <div class="contacto">
+    <!-- REGISTRO DOMICILIARIO -->
+    <div class="tarjeta">
+        <img src="../imagenes/imagenes pantalla principal/domiciliario.jpg">
+        <h3>Conviértete en domiciliario</h3>
+        <p>Únete a nuestro grupo de domiciliarios.</p>
+        <a href="../pages/registro_domiciliario.html" class="btn">
+            Conocer más
+        </a>
+    </div>
+
+    <!-- SOPORTE -->
+    <div class="tarjeta">
+        <img src="../imagenes/imagenes pantalla principal/asistenciaalcliente.jpg">
+        <h3>Asistencia al cliente</h3>
+        <p>¿Necesitas ayuda? Contáctanos.</p>
+        <a href="../pages/soporte2.html" class="btn">
+            Conocer más
+        </a>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTACTO
+========================= -->
+<div class="contacto" id="contacto">
+    <h2>Contacto</h2>
+    <div class="grid">
         <form>
-            <h2>Contacto</h2>
-            <label for="nombre">Nombre</label><br>
-            <input type="text" id="nombre" name="nombre"><br><br>
+            <label for="nombre">Nombre</label>
+            <input id="nombre" name="nombre" type="text" placeholder="Tu nombre">
 
-            <label for="correo">Correo</label><br>
-            <input type="email" id="correo" name="correo"><br><br>
+            <label for="correo">Correo</label>
+            <input id="correo" name="correo" type="email" placeholder="tu@ejemplo.com">
 
-            <label for="mensaje">Mensaje</label><br>
-            <input name="mensaje" id="mensaje"><br><br>
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" placeholder="Escribe tu mensaje..."></textarea>
 
-            <button type="submit">Enviar</button>
+            <div class="btns">
+                <button type="submit">Enviar</button>
+                <button type="button" class="secondary" onclick="this.closest('form').reset()">Limpiar</button>
+            </div>
         </form>
+
+        <aside class="info">
+            <h3>Información</h3>
+            <p><strong>Teléfono:</strong> +57 300 000 0000</p>
+            <p><strong>Correo:</strong> soporte@maisonduchef.com</p>
+            <p>También puedes escribirnos usando el formulario. Te responderemos en 24-48 horas.</p>
+        </aside>
     </div>
-    <footer>
+</div>
+
+<footer>
     <p>&copy; 2025 Maison Du Chef</p>
-    </footer>
-    <script src="../js/menu lateral/menulateral.js"></script>
+</footer>
+
+<!-- =========================
+     SCRIPTS
+========================= -->
+<script src="../js/menu lateral/menulateral.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/contacto.js" defer></script>
+<script src="../js/app.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+
+    protectRoute(['usuario','vendedor','admin','domiciliario']);
+
+    const token = localStorage.getItem('token');
+    let legacySession = null;
+    try { legacySession = getCurrentSession(); } catch(e) { legacySession = null; }
+
+    const menu = document.querySelector('.menuLateral ul');
+    const cerrarSesionLi = document.getElementById('cerrarSesion2').parentElement;
+
+    // Mostrar "Mis pedidos" a cualquier usuario autenticado (legacy o token)
+    if (token || legacySession) {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="../pages/mis_pedidos.html">Mis pedidos</a>`;
+        menu.insertBefore(li, cerrarSesionLi);
+    }
+
+    // Mostrar Panel Vendedor solo a vendedores
+    let isVendedor = false;
+    if (legacySession && legacySession.rol === 'vendedor') {
+        isVendedor = true;
+    }
+
+    if (!isVendedor && token) {
+        try {
+            const res = await fetch('http://localhost:3000/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res.ok) {
+                const ud = await res.json();
+                // id_rol 2 suele ser restaurante/vendedor en la BD
+                if (ud.id_rol === 2 || ud.rol === 'vendedor') isVendedor = true;
+            }
+        } catch (e) {
+            // ignore
+        }
+    }
+
+    if (isVendedor) {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="../pages/panel_vendedor.html">Panel Vendedor</a>`;
+        menu.insertBefore(li, cerrarSesionLi);
+    }
+
+    // Panel admin
+    try {
+        const sess = legacySession || null;
+        if (sess && sess.rol === 'admin') {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="../pages/cuenta_administrador.html">Panel Admin</a>`;
+            menu.insertBefore(li, cerrarSesionLi);
+        } else if (token) {
+            const res2 = await fetch('http://localhost:3000/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (res2.ok) {
+                const ud2 = await res2.json();
+                if (ud2.id_rol === 1 || ud2.rol === 'admin') {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="../pages/cuenta_administrador.html">Panel Admin</a>`;
+                    menu.insertBefore(li, cerrarSesionLi);
+                }
+            }
+        }
+    } catch(e){}
+    // Mostrar enlace domiciliario solo si es domiciliario
+    try {
+        let isDomiciliario = false;
+        if (legacySession && legacySession.rol === 'domiciliario') isDomiciliario = true;
+        if (!isDomiciliario && token) {
+            try {
+                const r = await fetch('http://localhost:3000/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } });
+                if (r.ok) {
+                    const ud = await r.json();
+                    if (ud.id_rol === 4 || ud.rol === 'domiciliario') isDomiciliario = true;
+                }
+            } catch (e) {
+                // ignore
+            }
+        }
+
+        if (isDomiciliario) {
+            const menuPedidos = document.getElementById('menuPedidosDomiciliario');
+            if (menuPedidos) menuPedidos.style.display = '';
+        }
+    } catch(e){}
+
+});
+</script>
+
+
 </body>
 </html>

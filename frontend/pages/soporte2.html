@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Asistencia al Cliente</title>
+
+  <link rel="stylesheet" href="../css/formularios_general.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+  <header class="formTopbar">
+    <button class="backBtn" onclick="window.location.href='catalogo.html'">
+      <i class="fa-solid fa-arrow-left"></i> Volver
+    </button>
+    <h1>Asistencia al cliente</h1>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2>Solicitud de soporte</h2>
+      <p class="muted">Cuéntanos tu caso y te ayudaremos.</p>
+
+      <form id="formSoporte" class="formGrid">
+
+        <div class="field">
+          <label>Nombre completo</label>
+          <input name="nombre" type="text" required placeholder="Nombre completo"/>
+        </div>
+
+        <div class="field">
+          <label>Número de cédula</label>
+          <input name="cedula" type="text" required placeholder="Cédula"/>
+        </div>
+
+        <div class="field">
+          <label>Teléfono</label>
+          <input name="telefono" type="tel" required placeholder="Teléfono"/>
+        </div>
+
+        <div class="field">
+          <label>Motivo de asistencia</label>
+          <select name="motivo" required>
+            <option value="">Selecciona</option>
+            <option value="Quejas o reclamos">Quejas o reclamos</option>
+            <option value="Sugerencias">Sugerencias</option>
+            <option value="Preguntas frecuentes">Preguntas frecuentes</option>
+            <option value="Ayuda con mi cuenta">Ayuda con mi cuenta</option>
+            <option value="Problemas con un pedido">Problemas con un pedido</option>
+            <option value="Métodos de pago">Métodos de pago</option>
+            <option value="Reembolsos">Reembolsos</option>
+            <option value="Información de restaurantes">Información de restaurantes</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="field field--full">
+          <label>Describe tu solicitud</label>
+          <textarea name="descripcion" rows="5" required placeholder="Escribe tu mensaje"></textarea>
+        </div>
+
+        <div class="field">
+          <label>Adjuntar evidencia (opcional)</label>
+          <input name="evidencia" type="file" accept="image/*,application/pdf"/>
+          <small class="help">Puedes adjuntar imagen o PDF.</small>
+        </div>
+
+        <div class="actions">
+          <button class="btnPrimary" type="submit">Enviar</button>
+        </div>
+
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/soporte_form.js"></script>
+</body>
+</html>

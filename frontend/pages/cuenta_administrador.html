@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel del Administrador</title>
+  <link rel="stylesheet" href="../css/cuenta_administrador.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
+      <h2>Administrador</h2>
+    </div>
+
+    <ul class="admin-menu">
+      <li><a href="cuenta_administrador.html" class="active"><i class="fa-solid fa-gauge"></i> Panel General</a></li>
+      <li><a href="admin_personal.html"><i class="fa-solid fa-user-gear"></i> Gestión de Personal</a></li>
+      <li><a href="admin_contenido.html"><i class="fa-solid fa-bowl-food"></i> Restaurantes & Platos</a></li>
+      <li><a href="informes_admin.html"><i class="fa-solid fa-chart-line"></i> Informes de Ventas</a></li>
+      <li><a href="configuracion.html"><i class="fa-solid fa-wrench"></i> Configuración</a></li>
+    </ul>
+
+    <button id="btnLogoutAdmin" class="admin-logout">
+      <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+    </button>
+  </aside>
+
+  <main class="admin-main">
+    <h1 class="admin-title">Panel del Administrador</h1>
+    <p class="admin-subtitle">Control total del sistema • Maison Du Chef 🍽️</p>
+
+    <div class="admin-cards">
+      <div class="admin-card">
+        <i class="fa-solid fa-users"></i>
+        <h3>Gestionar Usuarios</h3>
+        <p>Vendedores, domiciliarios y administradores</p>
+        <a href="admin_personal.html" class="admin-btn">Ingresar</a>
+      </div>
+      <div class="admin-card">
+        <i class="fa-solid fa-bowl-food"></i>
+        <h3>Restaurantes & Platos</h3>
+        <p>Agregar, editar y eliminar contenido</p>
+        <a href="admin_contenido.html" class="admin-btn">Administrar</a>
+      </div>
+      <div class="admin-card">
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>Informes</h3>
+        <p>Ventas por fecha, restaurante y método</p>
+        <a href="informes_admin.html" class="admin-btn">Ver Informes</a>
+      </div>
+      <div class="admin-card">
+        <i class="fa-solid fa-gear"></i>
+        <h3>Configuración</h3>
+        <p>Cambiar contraseñas y ajustes del sistema</p>
+        <a href="configuracion.html" class="admin-btn">Entrar</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script>
+    // Validar que solo admins accedan
+    document.addEventListener("DOMContentLoaded", () => {
+      const token = localStorage.getItem("mdc_token");
+      const session = JSON.parse(localStorage.getItem("mdc_session") || "null");
+
+      if (!token || !session || session.rol !== "admin") {
+        Swal.fire({ icon: 'error', title: 'Acceso denegado', text: 'No tienes permisos.' })
+        .then(() => window.location.href = "login.html");
+      }
+
+      document.getElementById("btnLogoutAdmin")?.addEventListener("click", () => {
+        Swal.fire({
+          title: "Cerrar sesión",
+          text: "¿Seguro deseas salir?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí",
+          cancelButtonText: "Cancelar"
+        }).then(r => {
+          if (r.isConfirmed) {
+            localStorage.removeItem("mdc_token");
+            localStorage.removeItem("mdc_session");
+            window.location.href = "login.html";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
+

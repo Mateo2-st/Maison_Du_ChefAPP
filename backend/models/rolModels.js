@@ -1,5 +1,5 @@
-// models/rolModels.js
-import pool from "../db.js";
+import pool from "../config/db.js"
+
 
 /*Obtener todos los roles*/
 export const getAllRoles = async () => {
@@ -44,4 +44,13 @@ export const deleteRole = async (id) => {
     );
 
     return result.affectedRows > 0;
+};
+
+/* Obtener rol por nombre */
+export const getRoleByName = async (nombreRol) => {
+    const [rows] = await pool.query(
+        "SELECT * FROM roles WHERE nombreRol = ?",
+        [nombreRol]
+    );
+    return rows[0] || null;
 };

@@ -1,5 +1,4 @@
-// models/pedidoModels.js
-import pool from "../db.js";
+import pool from "../config/db.js"
 
 /* Obtener todos los pedidos con información del usuario */
 export const getAllPedidos = async () => {
@@ -60,3 +59,4 @@ export const deletePedido = async (id) => {
 
     return result.affectedRows > 0;
 };
+

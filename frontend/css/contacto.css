@@ -1,0 +1,46 @@
+/* Estilos para el componente de contacto */
+.contacto{
+  max-width:1000px;
+  margin:40px auto;
+  padding:24px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,249,249,0.98));
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+}
+.contacto .grid{
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:24px;
+  align-items:start;
+}
+.contacto h2{
+  margin:0 0 12px 0;
+  font-size:28px;
+}
+.contacto form{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.contacto label{font-weight:600; font-size:14px;}
+.contacto input, .contacto textarea{
+  padding:10px 12px;
+  border:1px solid #ddd;
+  border-radius:6px;
+  font-size:14px;
+  resize:vertical;
+}
+.contacto textarea{min-height:120px}
+.contacto .btns{display:flex;gap:10px;margin-top:8px}
+.contacto button{
+  background:#ff6b35;color:#fff;border:none;padding:10px 16px;border-radius:6px;cursor:pointer;font-weight:700
+}
+.contacto button.secondary{background:#f1f1f1;color:#333}
+.contacto .info{
+  background:linear-gradient(180deg,#fff,#fafafa);
+  border-radius:8px;padding:14px;border:1px solid #eee;font-size:14px
+}
+.contacto .info p{margin:6px 0}
+@media (max-width:880px){
+  .contacto .grid{grid-template-columns:1fr}
+}

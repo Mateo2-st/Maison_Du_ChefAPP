@@ -51,10 +51,12 @@ create table productos (
 create table pedidos (
     idPedido int auto_increment primary key,		
     id_usuario int not null,
+    id_domiciliario int,
     direccion varchar(200) not null,
     fechaPedido datetime not null,
     estado varchar(50) default 'pendiente',
-    foreign key (id_usuario) references usuarios(idUsuario)
+    foreign key (id_usuario) references usuarios(idUsuario),
+    foreign key (id_domiciliario) references usuarios(idUsuario)
 );
 
 -- TABLA DE DETALLES DE PEDIDO

@@ -1,5 +1,4 @@
-// models/categoriaModels.js
-import pool from "../db.js";
+import pool from "../config/db.js"
 
 /* Obtener todas las categorías */
 export const getAllCategorias = async () => {

@@ -1,134 +1,141 @@
-// models/ventasModel.js
-import pool from "../db.js";
+import pool from "../config/db.js";
 
-/* ------------------------------------------------------------------------- */
-/*                                   PEDIDOS                                 */
-/* ------------------------------------------------------------------------- */
+/* =========================
+   PEDIDOS
+========================= */
 
-/** Obtener todos los pedidos */
 export const getAllPedidos = async () => {
-    const [rows] = await pool.query(`
-        SELECT p.idPedido, p.id_usuario, p.direccion, p.fechaPedido,
-        p.estado, u.nombre AS usuario
-        FROM pedidos p
-        INNER JOIN usuarios u ON p.id_usuario = u.idUsuario
-        ORDER BY p.idPedido DESC
-    `);
-
-    return rows;
+  const [rows] = await pool.query(`
+    SELECT p.idPedido, p.id_usuario, p.direccion, p.fechaPedido,
+           p.estado
+    FROM pedidos p
+    ORDER BY p.idPedido DESC
+  `);
+  return rows;
 };
 
-/** Obtener un pedido por ID con detalles y pago */
 export const getPedidoById = async (id) => {
-    // Pedido base
-    const [pedidoRows] = await pool.query(`
-        SELECT * FROM pedidos WHERE idPedido = ?
-    `, [id]);
+  const [pedidoRows] = await pool.query(
+    "SELECT * FROM pedidos WHERE idPedido = ?",
+    [id]
+  );
 
-    if (pedidoRows.length === 0) return null;
+  if (pedidoRows.length === 0) return null;
+  const pedido = pedidoRows[0];
 
-    const pedido = pedidoRows[0];
+  const [detalles] = await pool.query(`
+    SELECT d.idDetalle, d.id_producto, d.cantidad, d.precio
+    FROM detalles_pedido d
+    WHERE d.id_pedido = ?
+  `, [id]);
 
-    // Detalles del pedido
-    const [detalles] = await pool.query(`
-        SELECT d.*, p.nombreProducto, p.precio
-        FROM detalles_pedido d
-        INNER JOIN productos p ON d.id_producto = p.idProducto
-        WHERE d.id_pedido = ?
-    `, [id]);
+  const [pago] = await pool.query(
+    "SELECT * FROM pagos WHERE id_pedido = ?",
+    [id]
+  );
 
-    // Pago
-    const [pago] = await pool.query(`
-        SELECT * FROM pagos WHERE id_pedido = ?
-    `, [id]);
-
-    return {
-        ...pedido,
-        detalles,
-        pago: pago[0] || null
-    };
+  return { ...pedido, detalles, pago: pago[0] || null };
 };
 
-/** Crear un pedido */
-export const createPedido = async (data) => {
-    const { id_usuario, direccion, fechaPedido, estado = "pendiente" } = data;
+export const createPedido = async ({ id_usuario, direccion, fechaPedido, estado = "pendiente" }) => {
+  const [result] = await pool.query(`
+    INSERT INTO pedidos (id_usuario, direccion, fechaPedido, estado)
+    VALUES (?, ?, ?, ?)
+  `, [id_usuario, direccion, fechaPedido, estado]);
 
-    const [result] = await pool.query(`
-        INSERT INTO pedidos (id_usuario, direccion, fechaPedido, estado)
-        VALUES (?, ?, ?, ?)
-    `, [id_usuario, direccion, fechaPedido, estado]);
-
-    return { idPedido: result.insertId, ...data };
+  return { idPedido: result.insertId };
 };
 
-/** Actualizar pedido */
 export const updatePedido = async (id, data) => {
-    const { direccion, fechaPedido, estado } = data;
-
-    const [result] = await pool.query(`
-        UPDATE pedidos
-        SET direccion = ?, fechaPedido = ?, estado = ?
-        WHERE idPedido = ?
-    `, [direccion, fechaPedido, estado, id]);
-
-    return result.affectedRows > 0;
+  const [result] = await pool.query(
+    "UPDATE pedidos SET ? WHERE idPedido = ?",
+    [data, id]
+  );
+  return result.affectedRows > 0;
 };
 
-/** Eliminar pedido */
 export const deletePedido = async (id) => {
-    const [result] = await pool.query(`
-        DELETE FROM pedidos WHERE idPedido = ?
-    `, [id]);
-
-    return result.affectedRows > 0;
+  const [result] = await pool.query(
+    "DELETE FROM pedidos WHERE idPedido = ?",
+    [id]
+  );
+  return result.affectedRows > 0;
 };
 
+/* =========================
+   DETALLES PEDIDO
+========================= */
 
-/* ------------------------------------------------------------------------- */
-/*                            DETALLES DE PEDIDO                             */
-/* ------------------------------------------------------------------------- */
-
-/** Insertar detalle de pedido */
 export const addDetallePedido = async (id_pedido, id_producto, cantidad) => {
-    const [result] = await pool.query(`
-        INSERT INTO detalles_pedido (id_pedido, id_producto, cantidad)
-        VALUES (?, ?, ?)
-    `, [id_pedido, id_producto, cantidad]);
+  const [[producto]] = await pool.query(
+    "SELECT precio FROM productos WHERE idProducto = ?",
+    [id_producto]
+  );
 
-    return { idDetalle: result.insertId, id_pedido, id_producto, cantidad };
+  if (!producto) throw new Error("Producto no encontrado");
+
+  const [result] = await pool.query(`
+    INSERT INTO detalles_pedido (id_pedido, id_producto, cantidad, precio)
+    VALUES (?, ?, ?, ?)
+  `, [id_pedido, id_producto, cantidad, producto.precio]);
+
+  return { idDetalle: result.insertId };
 };
 
-/** Eliminar todos los detalles de un pedido */
 export const deleteDetallesByPedido = async (id_pedido) => {
-    const [result] = await pool.query(`
-        DELETE FROM detalles_pedido WHERE id_pedido = ?
-    `, [id_pedido]);
-
-    return result.affectedRows > 0;
+  const [result] = await pool.query(
+    "DELETE FROM detalles_pedido WHERE id_pedido = ?",
+    [id_pedido]
+  );
+  return result.affectedRows > 0;
 };
 
+export const getDetallePedidoByPedidoId = async (idPedido) => {
+  const [rows] = await pool.query(`
+    SELECT idDetalle, id_producto, cantidad, precio
+    FROM detalles_pedido
+    WHERE id_pedido = ?
+  `, [idPedido]);
 
-/* ------------------------------------------------------------------------- */
-/*                                   PAGOS                                    */
-/* ------------------------------------------------------------------------- */
-
-/** Registrar un pago */
-export const createPago = async (data) => {
-    const { id_pedido, metodo, monto, fecha } = data;
-
-    const [result] = await pool.query(`
-        INSERT INTO pagos (id_pedido, metodo, monto, fecha)
-        VALUES (?, ?, ?, ?)
-    `, [id_pedido, metodo, monto, fecha]);
-
-    return { idPago: result.insertId, ...data };
+  return rows;
 };
 
-/** Obtener pago por pedido */
+/* =========================
+   PAGOS
+========================= */
+
+export const createPago = async ({ id_pedido, metodo, monto, fecha }) => {
+  const [result] = await pool.query(`
+    INSERT INTO pagos (id_pedido, metodo, monto, fecha)
+    VALUES (?, ?, ?, ?)
+  `, [id_pedido, metodo, monto, fecha]);
+
+  return { idPago: result.insertId };
+};
+
 export const getPagoByPedido = async (id_pedido) => {
-    const [rows] = await pool.query(`
-        SELECT * FROM pagos WHERE id_pedido = ?
-    `, [id_pedido]);
+  const [rows] = await pool.query(
+    "SELECT * FROM pagos WHERE id_pedido = ?",
+    [id_pedido]
+  );
+  return rows[0] || null;
+};
 
-    return rows[0] || null;
+// ==========================
+// PEDIDOS ADMIN
+// ==========================
+export const getAllPedidosAdmin = async () => {
+  const [rows] = await pool.query(`
+    SELECT 
+      p.idPedido,
+      u.nombre AS usuario,
+      p.direccion,
+      p.fechaPedido,
+      p.estado
+    FROM pedidos p
+    JOIN usuarios u ON p.id_usuario = u.idUsuario
+    ORDER BY p.idPedido DESC
+  `);
+
+  return rows;
 };

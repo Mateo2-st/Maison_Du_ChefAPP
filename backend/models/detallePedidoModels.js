@@ -1,5 +1,4 @@
-// models/detallePedidoModels.js
-import pool from "../db.js";
+import pool from "../config/db.js"
 
 /* Obtener detalles de un pedido */
 export const getDetallesByPedido = async (id_pedido) => {

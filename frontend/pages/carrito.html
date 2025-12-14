@@ -2,124 +2,78 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito de Compras</title>
-
-  <!-- Iconos -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-  <!-- Estilos -->
+  <title>Tu carrito</title>
   <link rel="stylesheet" href="../css/carrito.css">
 </head>
-
 <body>
 
-  <!-- Encabezado -->
-  <header class="cart-header">
-    <a href="../pages/cuenta.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-    <h2>🍽 Tu Carrito de Compras</h2>
-  </header>
+<div class="container">
 
-  <!-- Contenido -->
-  <main class="cart-container">
-
-    <div id="carrito-items" class="cart-items"></div>
-
-    <!-- Total -->
-    <div class="cart-total">
-      <p>Total: <span id="total">$0</span></p>
-    </div>
-
-    <!-- Botones -->
-    <div class="checkout">
-      <a class="btn-secondary" href="../pages/maison.html">
-        ⬅ Seguir comprando
-      </a>
-
-      <button class="btn" onclick="abrirModal()">
-        Finalizar Compra
-      </button>
-    </div>
-
-  </main>
-
-  <!-- ================= MODAL ================= -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-
-      <span class="close" onclick="cerrarModal()">&times;</span>
-
-      <h3>✔ Pedido confirmado</h3>
-      <p>¡Gracias por tu compra!</p>
-
-      <br>
-
-      <a href="../pages/cuenta.html" class="btn">Aceptar</a>
-    </div>
+  <div class="cart-header">
+    <h1>🛒 Tu carrito</h1>
+    <button class="back-btn" onclick="location.href='catalogo.html'">
+      ← Volver al catálogo
+    </button>
   </div>
 
-  <!-- ================= SCRIPT ================= -->
-  <script>
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  <div class="cart">
+    <ul id="cart-items"></ul>
 
-    function renderCarrito() {
-      const contenedor = document.getElementById("carrito-items");
-      const totalElement = document.getElementById("total");
-      contenedor.innerHTML = "";
-      let total = 0;
+    <div class="total">
+      <span>Total:</span>
+      <span>$<span id="total">0</span></span>
+    </div>
 
-      if (carrito.length === 0) {
-        contenedor.innerHTML = "<p style='text-align:center; font-size:1.2rem;'>🛒 Tu carrito está vacío</p>";
-        totalElement.textContent = "$0";
-        return;
-      }
+    <div class="address-section">
+      <label for="direccion">Dirección de entrega:</label>
+      <input type="text" id="direccion" class="address-input" placeholder="Ingresa tu dirección de entrega" required>
+    </div>
 
-      carrito.forEach((item, index) => {
-        total += item.precio;
+    <button id="checkoutBtn" class="checkout-btn full">
+      Finalizar compra
+    </button>
+  </div>
+</div>
 
-        const div = document.createElement("div");
-        div.classList.add("carrito-item");
-        div.innerHTML = `
-          <img src="${item.imagen}" alt="${item.nombre}">
-          <div class="carrito-item-info">
-            <h3>${item.nombre}</h3>
-            <p>${item.descripcion}</p>
-            <p><strong>$${item.precio}</strong></p>
-          </div>
-          <button class="btn-remove" onclick="eliminarItem(${index})">
-            <i class="fa-solid fa-trash"></i>
-          </button>
-        `;
-        contenedor.appendChild(div);
-      });
+<!-- ===== MODAL PAGO ===== -->
+<div id="paymentModal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="closePaymentModal()">×</button>
 
-      totalElement.textContent = "$" + total.toLocaleString();
-    }
+    <h2>Selecciona método de pago</h2>
+    <p class="payment-total">
+      Total a pagar: <strong>$<span id="paymentTotal">0</span></strong>
+    </p>
 
-    function eliminarItem(index) {
-      carrito.splice(index, 1);
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      renderCarrito();
-    }
+    <div class="payment-methods">
+      <button class="checkout-btn" onclick="payCash()">💵 Efectivo</button>
+      <button class="checkout-btn" onclick="showCard()">💳 Tarjeta</button>
+    </div>
 
-    // ===== MODAL =====
-    function abrirModal() {
-      document.getElementById("modal").style.display = "flex";
-    }
+    <!-- TARJETA -->
+    <div id="cardForm" class="hidden">
+      <div class="card-fields">
+        <input type="text" placeholder="Número de tarjeta">
+        <input type="text" placeholder="Nombre">
+        <input type="text" placeholder="MM/AA">
+        <input type="text" placeholder="CVV">
+      </div>
+      <button class="checkout-btn full" onclick="payCard()">Pagar</button>
+    </div>
+  </div>
+</div>
 
-    function cerrarModal() {
-      document.getElementById("modal").style.display = "none";
-    }
+<!-- ===== MODAL ÉXITO ===== -->
+<div id="successModal" class="modal">
+  <div class="modal-overlay"></div>
+  <div class="modal-box success-box">
+    <h2>✅ Pago exitoso</h2>
+    <p>Gracias por tu compra</p>
+    <button class="checkout-btn full" onclick="finish()">Volver al catálogo</button>
+  </div>
+</div>
 
-    window.onclick = function(event) {
-      if (event.target === document.getElementById("modal")) {
-        cerrarModal();
-      }
-    }
-
-    renderCarrito();
-  </script>
-
+<script src="../js/carrito/carrito.js"></script>
 </body>
 </html>
-  

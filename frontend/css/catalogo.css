@@ -1,3 +1,6 @@
+/* =========================
+   RESET GENERAL
+========================= */
 * {
     margin: 0;
     padding: 0;
@@ -5,13 +8,14 @@
     font-family: Arial, sans-serif;
 }
 
-body{
+body {
     background: #fff;
     color: #333;
 }
 
-
-/* Barra superior */
+/* =========================
+   BARRA SUPERIOR
+========================= */
 .barraSuperior {
     display: flex;
     justify-content: space-between;
@@ -23,24 +27,15 @@ body{
 .barraSuperior a {
     text-decoration: none;
     font-weight: bold;
-    color: #333;
-}
-
-.barraSuperior img {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    margin-top: 5px;
-    justify-content: space-between;
+    color: #fff;
 }
 
 .iconoMenu i {
     font-size: 20px;
     cursor: pointer;
-    user-select: none; 
+    user-select: none;
     color: #fff;
 }
-
 
 .opcionesSuperior {
     display: flex;
@@ -48,39 +43,30 @@ body{
     align-items: center;
 }
 
-.opcionesSuperior img {
-    margin-left: 20px;
-    flex: 5vh;
-}
-
-.opcionesSuperior a {
-    color: #fff;
-}
-
-.cuenta span {
-    font-weight: bold;
-}
-
-/* Menu lateral oculto */
-
-.menuLateral {  
+/* =========================
+   MENÚ LATERAL
+========================= */
+.menuLateral {
     position: fixed;
     top: 0;
     left: -250px;
     width: 250px;
     height: 100%;
     background-color: #614d30;
-    color: #333;
     padding-top: 60px;
     transition: left 0.3s ease;
     z-index: 1000;
-    box-shadow: 3px 0 6px rgba(o, 0, 0, 0.2);
     font-weight: bold;
 }
 
-.menuLateral ul {
+.menuLateral.activo {
+    left: 0;
+}
+
+.menuLateral ul,
+.menuLateral ul li {
     list-style: none;
-    padding: 0;
+    padding-left: 0;
 }
 
 .menuLateral ul li {
@@ -93,33 +79,17 @@ body{
     text-decoration: none;
     font-size: 18px;
     display: block;
-    transition: color 0.2s;
 }
 
 .menuLateral ul li a:hover {
     color: #4A2511;
 }
 
-.menuLateral.activo {
-    left: 0;
-}
-
-.overlay {
+.menuLateral ul li a i {
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 00.3);
-    z-index: 900;
 }
 
-.overlay.activo {
-    display: block;
-}
-
-#cerrar-menu{
+#cerrar-menu {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -130,7 +100,6 @@ body{
     font-size: 16px;
     cursor: pointer;
     border-radius: 6px;
-    transition: background o.3s ease;
 }
 
 #cerrar-menu:hover {
@@ -145,42 +114,23 @@ body{
 
 .logoMenu img {
     height: 40px;
-    width: auto;
     border-radius: 6px;
 }
 
-/* Parte principal */
+/* =========================
+   SECCIÓN PRINCIPAL
+========================= */
 .principal {
-     display: flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: url("imagenes\ pantalla\ principal/fondo.png") no-repeat center/cover; 
+    background: url("../imagenes/imagenes pantalla principal/fondo.png") no-repeat center/cover;
     padding: 60px 20px;
-    margin: 0;
     width: 100%;
-}
-
-.texto-principal {
-    text-align: center;
-    color: black;
-    background: rgba(255,255,255,0.7); 
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.principalIzquierda {
-    flex: 1;
-}
-
-.imagenPrincipal {
-    width: 100%;
-    max-width: 250px;
-    border-radius: 10px;
 }
 
 .principalDerecha {
-    flex: 7;
     text-align: center;
 }
 
@@ -190,7 +140,7 @@ body{
 }
 
 .principalDerecha p {
-    font-size: italic;
+    font-style: italic;
     margin-bottom: 20px;
 }
 
@@ -198,7 +148,6 @@ body{
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 5px;
 }
 
@@ -207,169 +156,152 @@ body{
     width: 300px;
     border: 1px solid #ccc;
     border-radius: 6px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); 
 }
 
 .cajaBusqueda button {
-      padding: 10px 20px;
+    padding: 10px 20px;
     background-color: #4a3728;
     border: none;
     color: white;
     cursor: pointer;
     border-radius: 6px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-    transition: background 0.3s ease;
 }
 
-
-.buscar button:hover {
+.cajaBusqueda button:hover {
     background-color: #5e4729;
 }
 
-/* Categorias */
+/* =========================
+   CATEGORÍAS (ORIGINAL FIXED)
+========================= */
 .categorias {
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
-    background: #fff;
     padding: 10px 0;
-    justify-items: center;
+    flex-wrap: wrap;
 }
 
 .categoria {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
     text-align: center;
 }
 
-.categoria img {
+.circulo {
+    width: 100px;
+    height: 100px;
+    background: #655b5b;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circulo img {
     width: 80px;
     height: 80px;
-    background: #6e6969;
-    object-fit: cover;
-    border-radius: 50%;
-
+    object-fit: contain;
+    background: transparent;
 }
 
 .categoria p {
     font-weight: bold;
-    margin-bottom: 5px;
 }
 
 .categoria button {
-    background: #4a3728;    
+    background: #4a3728;
     border: none;
-    padding: 6px 12px;
-    border-radius: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
     cursor: pointer;
     color: #fff;
 }
 
-.circulo {
-  width: 100px;
-  height: 100px;
-  background: #655b5b;      
-  border-radius: 50%;        
-  display: flex;             
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;        
-  object-fit: contain;
-  object-position: center;
-}
-
-.circulo img {
-  width: 90%;               
-  height: 90%;
-  object-fit: cover;
-  background: beige;       
-}
-
-/* Restaurantes */
+/* =========================
+   RESTAURANTES (ORIGINAL FIXED)
+========================= */
 .restaurantes {
     text-align: center;
     margin: 30px 0;
 }
 
-.restaurantes h2 {
-    margin-bottom: 20px;
-}
-
 .rejillaRestaurantes {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
     gap: 80px;
+    flex-wrap: wrap;
 }
 
+.restaurante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.circuloRestaurante {
+    width: 80px;
+    height: 80px;
+    background: #655b5b;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circuloRestaurante img {
+    width: 70px;
+    height: 70px;
+    background: #fff;
+    object-fit: contain;
+    border-radius: 50%;
+}
 
 .rejillaRestaurantes button {
     background: #4a3728;
     border: none;
-    padding: 6px 12px;
-    border-radius: 15px;
+    padding: 6px 14px;
+    border-radius: 20px;
     cursor: pointer;
     color: #fff;
 }
 
-.circuloRestaurante {
-  width: 80px;
-  height: 80px;
-  background: #655b5b;      
-  border-radius: 50%;        
-  display: flex;             
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;        
-  object-fit: contain;
-  object-position: center;
-}
-
-.restaurante img {
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    object-fit: cover;
-    border-radius: 50%;
+/* =========================
+   ÚNETE
+========================= */
+.marca {
+    text-align: center;
+    margin-top: 50px;
+    color: #432616;
+    font-weight: bold;
 }
 
 .unete {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around; /* o space-between, según quieras */
+    justify-content: space-around;
     gap: 20px;
-    text-align: center;
     padding: 50px 20px;
-    background: #fff6ec;    
+    background: #fff6ec;
+    flex-wrap: wrap;
 }
-
-.unete h2 {
-    font-size: 32px;
-    margin-bottom: 30px;
-}
-
- .marca {
-    color: #432616;
-    font-weight: bold;
-    margin-top: 5%;
-}
-
 
 .tarjeta {
-    display: absolute;
-    justify-content: space-between;
     background: #4a3728;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.8);
     width: 300px;
     padding: 20px;
     text-align: center;
-    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
 }
 
 .tarjeta img {
     width: 100%;
     height: 100px;
     object-fit: cover;
-    border-radius: 8px 8px 0 0;
+    border-radius: 8px;
 }
 
 .tarjeta h3 {
@@ -383,57 +315,47 @@ body{
     color: #fff;
 }
 
-.tarjeta button {
+.tarjeta .btn {
+    display: inline-block;
     background: #432616;
-    border: none;
-    padding: 15px 15px;
+    padding: 12px 20px;
     color: white;
     border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-.tarheta button:hover {
+.tarjeta .btn:hover {
     background: #a8703e;
 }
 
-/* Contacto */
-.contacto{
-    margin-top: 30px;
-    margin-bottom: 20px;
-    margin-left: 600px;
-    margin-right: 600px;
-    color: #333;
+/* =========================
+   CONTACTO
+========================= */
+.contacto {
+    margin: 40px auto;
+    max-width: 700px;
     background: whitesmoke;
+    padding: 30px;
     border-radius: 10px;
-    font-size: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.6);
 }
 
 .contacto h2 {
-    font: 28px;
-    margin-bottom: 30px;
-    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .contacto button {
     border-radius: 10px;
     color: #fff;
-    font-size: 18px;
+    font-size: 16px;
     background-color: #a18262;
-    justify-content: center;
-    text-align: center;
-    width: 80px;
+    width: 100px;
     height: 40px;
-    margin-bottom: 20px;
     cursor: pointer;
-
 }
 
 .contacto button:hover {
     background: #a8703e;
-}
-
-form{
-    font-family: Arial, sans-serif;
 }

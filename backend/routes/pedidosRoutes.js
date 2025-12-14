@@ -1,20 +1,30 @@
-import express from 'express';
+import { Router } from "express";
 import {
-    listProducts,
-    getProduct,
-    addProduct,
-    editProduct,
-    removeProduct,
-} from '../controllers/productController.js'
+  listPedidos,
+  getPedido,
+  addPedido,
+  editPedido,
+  removePedido
+} from "../controllers/pedidoControllers.js";
 
+import { verifyToken } from "../middleware/verifyToken.js";
+import { requireRole } from "../middleware/roleMiddleware.js";
 
-import { verifyToken } from '../middleware/authMiddleware.js'
-import { requireRole } from '../middleware/roleMiddleware';
+const router = Router();
 
-const router = express.Router();
+// ADMIN
+router.get(
+  "/admin",
+  verifyToken,
+  requireRole(1),
+  listPedidos
+);
 
+// GENERALES
+router.get("/", listPedidos);
+router.get("/:id", getPedido);
+router.post("/", verifyToken, requireRole(1, 2, 3), addPedido);
+router.put("/:id", verifyToken, requireRole(1, 3), editPedido);
+router.delete("/:id", verifyToken, requireRole(1), removePedido);
 
-
-router.get('/', listProducts);
-router.get('id:id', getProduct);
-
+export default router;

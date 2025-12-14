@@ -1,67 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Avanzado</title>
-    <link rel="stylesheet" href="../css/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión - Maison Du Chef</title>
+
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
 
-    <header class="barraSuperior">
-        <div class="iconoMenu"> 
-            <i class="fa-solid fa-bars"></i>
-            </div>
-            <div class="logo">
-                <img src="../imagenes/imagen logo/logo.png" alt="">
-            </div>
-            <div class="cuenta">
-            <a href="../pages/registro.html"><i class="fa-solid fa-user"></i>Registrarse</a>
-        </div>
-    </header>
+  <!-- Header -->
+  <header class="barraSuperior">
+    <div class="iconoMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="logo"><img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef" /></div>
+    <div class="cuenta"><a href="../pages/registro.html"><i class="fa-solid fa-user"></i> Registrarse</a></div>
+  </header>
 
-    <!--Menu hamburguesa--> 
-    <nav class="menuLateral" id="menu-lateral">
-        <div class="logoMenu">
-            <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
-        </div>
-        <button id="cerrar-menu">&#10006;</button>
-        <ul>
+  <!-- Menú lateral -->
+  <nav class="menuLateral" id="menu-lateral">
+    <div class="logoMenu"><img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef" /></div>
+    <button id="cerrar-menu">&#10006;</button>
+    <ul>
+      <li><a href="#">Asistencia al usuario</a></li>
+      <li><a href="#unete">¿Quiénes somos?</a></li>
+    </ul>
+  </nav>
 
-            <li><a href="#">Asistencia al usuario</a></li>
-            <li><a href="#unete">¿Quienes somos?</a></li>
-        </ul>
-    </nav>
-
-    
-    <div class="registro">
-        <div class="imagenFondo">
-            <div class="carruselItems">
-            <img src="../imagenes/imagen fondo login/fondo.jpg">
-            <img src="../imagenes/imagen fondo login/carrusel2.jpg" alt="">
-            <img src="../imagenes/imagen fondo login/carrusel3.jpg" alt="">
-            <img src="../imagenes/imagen fondo login/fondo.jpg" alt="">
-            <img src="../imagenes/imagen fondo login/carrusel2.jpg" alt="">
-            <img src="../imagenes/imagen fondo login/carrusel3.jpg" alt="">
-            </div>
+  <!-- Contenedor principal -->
+  <div class="registro">
+    <div class="imagenFondo"><img src="../imagenes/imagen fondo login/fondo.jpg" /></div>
+    <div class="visual">
+      <form id="loginForm" class="form">
+        <h1 class="title">Iniciar Sesión</h1>
+        <div class="inputContainer">
+          <input type="email" id="loginEmail" class="input" required />
+          <label class="label">E-mail</label>
         </div>
-        <div class="visual">
-            <form action="../pages/catalogo.html" class="form">
-            <h1 class="title">Iniciar Sesión</h1>
-                <div class="inputContainer">
-                    <input type="email" class="input" placeholder="">
-                    <label class="label">E-mail</label> 
-                </div>
-                <div class="inputContainer">
-                    <input type="password" class="input" placeholder="">
-                    <label class="label">Contraseña</label> 
-                </div>
-                <input type="submit" class="submitBtn" value="Iniciar Sesión">
-            </form>
+        <div class="inputContainer">
+          <input type="password" id="loginPassword" class="input" required />
+          <label class="label">Contraseña</label>
         </div>
+        <button type="submit" class="submitBtn">Iniciar Sesión</button>
+      </form>
     </div>
-    <script src="../js/menu lateral Login/menulateral.js"></script>
-    <script src="../js/carrusel/carrusel.js"></script>
+  </div>
+
+  <!-- JS del menú -->
+  <script src="../js/menu lateral Login/menulateral.js"></script>
+
+  <!-- ===== LÓGICA DE LOGIN ===== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const correo = document.getElementById("loginEmail").value.trim();
+        const contrasena = document.getElementById("loginPassword").value.trim();
+
+        try {
+          const res = await fetch("http://localhost:3000/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ correo, contrasena })
+          });
+
+          const result = await res.json();
+
+          if (res.ok) {
+            // Guardamos JWT + datos del usuario
+            localStorage.setItem("mdc_token", result.token);
+            localStorage.setItem("mdc_session", JSON.stringify(result.user));
+
+            // Redirigir según rol
+            if (result.user.rol === "admin") window.location.href = "cuenta_administrador.html";
+            else window.location.href = "catalogo.html";
+
+          } else {
+            Swal.fire({ icon: "error", title: "Error", text: result.message });
+          }
+
+        } catch (err) {
+          console.error(err);
+          Swal.fire({ icon: "error", title: "Error", text: "No se pudo conectar con el servidor" });
+        }
+      });
+    });
+  </script>
 </body>
 </html>

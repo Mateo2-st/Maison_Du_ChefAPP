@@ -1,5 +1,4 @@
-// models/pagoModels.js
-import pool from "../db.js";
+import pool from "../config/db.js"
 
 /* Obtener todos los pagos con información del pedido */
 export const getAllPagos = async () => {

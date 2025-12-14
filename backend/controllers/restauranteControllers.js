@@ -1,113 +1,119 @@
-// controllers/restauranteController.js
-import pool from "../db.js";
+import pool from "../config/db.js";
 
-/* ----------------------- OBTENER TODOS LOS RESTAURANTES ----------------------- */
-export const listRestaurantes = async (req, res) => {
-    try {
-        const [rows] = await pool.query(`
-            SELECT r.*, u.nombre AS propietario
-            FROM restaurantes r
-            INNER JOIN usuarios u ON r.id_usuario = u.idUsuario
-            ORDER BY r.idRestaurante DESC
-        `);
-        return res.json(rows);
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+/* =========================
+   OBTENER TODOS
+========================= */
+export const getAllRestaurantes = async (req, res) => {
+  try {
+    const [rows] = await pool.query("SELECT * FROM restaurantes");
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener restaurantes" });
+  }
 };
 
-/* ----------------------- OBTENER RESTAURANTE POR ID ----------------------- */
-export const getRestaurante = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const [rows] = await pool.query(`
-            SELECT r.*, u.nombre AS propietario
-            FROM restaurantes r
-            INNER JOIN usuarios u ON r.id_usuario = u.idUsuario
-            WHERE r.idRestaurante = ?
-        `, [id]);
+/* =========================
+   OBTENER POR DUEÑO
+========================= */
+export const getRestaurantesByDueno = async (req, res) => {
+  try {
+    const { id_usuario } = req.params;
 
-        if (rows.length === 0) {
-            return res.status(404).json({ message: "Restaurante no encontrado" });
-        }
+    const [rows] = await pool.query(
+      "SELECT * FROM restaurantes WHERE id_usuario = ?",
+      [id_usuario]
+    );
 
-        return res.json(rows[0]);
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener restaurantes del dueño" });
+  }
 };
 
-/* ----------------------- CREAR RESTAURANTE ----------------------- */
-export const addRestaurante = async (req, res) => {
-    try {
-        const { nombreRestaurante, direccion, telefono, id_usuario } = req.body;
+/* =========================
+   CREAR
+========================= */
+export const createRestaurante = async (req, res) => {
+  try {
+    const { nombreRestaurante, direccion, telefono, id_usuario, imagen } = req.body;
 
-        if (!nombreRestaurante || !direccion || !telefono || !id_usuario) {
-            return res.status(400).json({ message: "Faltan campos obligatorios" });
-        }
+    const [result] = await pool.query(
+      `INSERT INTO restaurantes
+       (nombreRestaurante, direccion, telefono, id_usuario, imagen)
+       VALUES (?, ?, ?, ?, ?)`,
+      [nombreRestaurante, direccion, telefono, id_usuario, imagen || null]
+    );
 
-        const [result] = await pool.query(`
-            INSERT INTO restaurantes (nombreRestaurante, direccion, telefono, id_usuario)
-            VALUES (?, ?, ?, ?)
-        `, [nombreRestaurante, direccion, telefono, id_usuario]);
-
-        const nuevoRestaurante = {
-            idRestaurante: result.insertId,
-            nombreRestaurante,
-            direccion,
-            telefono,
-            id_usuario
-        };
-
-        return res.status(201).json({ message: "Restaurante creado", restaurante: nuevoRestaurante });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
-    }
+    res.status(201).json({
+      idRestaurante: result.insertId,
+      nombreRestaurante,
+      direccion,
+      telefono,
+      id_usuario
+    });
+  } catch (error) {
+    console.error("ERROR CREAR:", error);
+    res.status(500).json({ message: "Error al crear restaurante" });
+  }
 };
 
-/* ----------------------- ACTUALIZAR RESTAURANTE ----------------------- */
-export const editRestaurante = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { nombreRestaurante, direccion, telefono } = req.body;
+/* =========================
+   ACTUALIZAR (EDITAR) ✅
+========================= */
+export const updateRestaurante = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nombreRestaurante, direccion, telefono, imagen } = req.body;
 
-        const [result] = await pool.query(`
-            UPDATE restaurantes
-            SET nombreRestaurante = ?, direccion = ?, telefono = ?
-            WHERE idRestaurante = ?
-        `, [nombreRestaurante, direccion, telefono, id]);
+    console.log("EDITANDO RESTAURANTE ID:", id);
+    console.log("DATA:", req.body);
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Restaurante no encontrado o sin cambios" });
-        }
+    const [result] = await pool.query(
+      `UPDATE restaurantes
+       SET nombreRestaurante = ?,
+           direccion = ?,
+           telefono = ?,
+           imagen = ?
+       WHERE idRestaurante = ?`,
+      [nombreRestaurante, direccion, telefono, imagen || null, id]
+    );
 
-        const [rows] = await pool.query(`SELECT * FROM restaurantes WHERE idRestaurante = ?`, [id]);
-        return res.json({ message: "Restaurante actualizado", restaurante: rows[0] });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "No se actualizó ningún restaurante"
+      });
     }
+
+    res.json({ message: "Restaurante actualizado correctamente" });
+  } catch (error) {
+    console.error("ERROR UPDATE:", error);
+    res.status(500).json({ message: "Error al actualizar restaurante" });
+  }
 };
 
-/* ----------------------- ELIMINAR RESTAURANTE ----------------------- */
-export const removeRestaurante = async (req, res) => {
-    try {
-        const { id } = req.params;
+/* =========================
+   ELIMINAR
+========================= */
+export const deleteRestaurante = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-        const [result] = await pool.query(`
-            DELETE FROM restaurantes WHERE idRestaurante = ?
-        `, [id]);
+    const [result] = await pool.query(
+      "DELETE FROM restaurantes WHERE idRestaurante = ?",
+      [id]
+    );
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ message: "Restaurante no encontrado" });
-        }
-
-        return res.json({ message: "Restaurante eliminado" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Error del servidor" });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Restaurante no encontrado"
+      });
     }
+
+    res.json({ message: "Restaurante eliminado correctamente" });
+  } catch (error) {
+    console.error("ERROR DELETE:", error);
+    res.status(500).json({ message: "Error al eliminar restaurante" });
+  }
 };

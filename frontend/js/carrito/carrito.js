@@ -1,47 +1,193 @@
-// ===== Recuperar carrito desde localStorage =====
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+const list = document.getElementById("cart-items");
+const totalSpan = document.getElementById("total");
+const checkoutBtn = document.getElementById("checkoutBtn");
 
-// ===== Renderizar carrito =====
-function renderCarrito() {
-  const contenedor = document.getElementById("carrito-items");
-  const totalElement = document.getElementById("total");
-  contenedor.innerHTML = "";
+const paymentModal = document.getElementById("paymentModal");
+const successModal = document.getElementById("successModal");
+const paymentTotal = document.getElementById("paymentTotal");
+const cardForm = document.getElementById("cardForm");
+
+/* =========================
+   CARRITO (LOCALSTORAGE)
+========================= */
+function getCart() {
+  return JSON.parse(localStorage.getItem("mdc_cart")) || [];
+}
+
+function saveCart(cart) {
+  localStorage.setItem("mdc_cart", JSON.stringify(cart));
+}
+
+/* =========================
+   RENDER CARRITO
+========================= */
+function render() {
+  const cart = getCart();
+  list.innerHTML = "";
   let total = 0;
 
-  if (carrito.length === 0) {
-    contenedor.innerHTML = "<p style='text-align:center; font-size:1.2rem;'>🛒 Tu carrito está vacío</p>";
-    totalElement.textContent = "$0";
+  if (cart.length === 0) {
+    list.innerHTML = "<li>Tu carrito está vacío</li>";
+    totalSpan.textContent = "0";
     return;
   }
 
-  carrito.forEach((item, index) => {
-    total += item.precio;
+  cart.forEach((p, i) => {
+    total += p.precio * p.cantidad;
 
-    const div = document.createElement("div");
-    div.classList.add("carrito-item");
-    div.innerHTML = `
-      <img src="${item.imagen}" alt="${item.nombre}">
-      <div class="carrito-item-info">
-        <h3>${item.nombre}</h3>
-        <p>${item.descripcion}</p>
-        <p><strong>$${item.precio}</strong></p>
+    const li = document.createElement("li");
+    li.className = "cart-item";
+    li.innerHTML = `
+      <span>${p.nombreProducto}</span>
+
+      <div class="qty-controls">
+        <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+        <span class="qty">${p.cantidad}</span>
+        <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
       </div>
-      <button class="btn-remove" onclick="eliminarItem(${index})">
-        <i class="fa-solid fa-trash"></i>
-      </button>
+
+      <span>$${(p.precio * p.cantidad).toFixed(2)}</span>
     `;
-    contenedor.appendChild(div);
+    list.appendChild(li);
   });
 
-  totalElement.textContent = "$" + total;
+  totalSpan.textContent = total.toFixed(2);
 }
 
-// ===== Eliminar producto =====
-function eliminarItem(index) {
-  carrito.splice(index, 1);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  renderCarrito();
+/* =========================
+   CAMBIAR CANTIDAD
+========================= */
+function changeQty(index, delta) {
+  const cart = getCart();
+  cart[index].cantidad += delta;
+
+  if (cart[index].cantidad <= 0) {
+    cart.splice(index, 1);
+  }
+
+  saveCart(cart);
+  render();
 }
 
-// ===== Inicializar =====
-renderCarrito();
+/* =========================
+   CHECKOUT
+========================= */
+checkoutBtn.onclick = () => {
+  if (getCart().length === 0) return;
+
+  const direccion = document.getElementById("direccion").value.trim();
+  if (!direccion) {
+    alert("Por favor ingresa tu dirección de entrega");
+    return;
+  }
+
+  paymentTotal.textContent = totalSpan.textContent;
+  paymentModal.classList.add("show");
+};
+
+function closePaymentModal() {
+  paymentModal.classList.remove("show");
+  cardForm.classList.add("hidden");
+}
+
+/* =========================
+   CREAR PEDIDO + PAGO
+========================= */
+async function enviarPedido(metodoPago) {
+  const cart = getCart();
+  if (cart.length === 0) return;
+
+  const user = JSON.parse(localStorage.getItem("mdc_session"));
+  const token = localStorage.getItem("mdc_token");
+  const direccion = document.getElementById("direccion").value.trim();
+
+  if (!user || !token) {
+    alert("Sesión inválida");
+    location.href = "login.html";
+    return;
+  }
+
+  if (!direccion) {
+    alert("Por favor ingresa tu dirección de entrega");
+    return;
+  }
+
+  /* 1️⃣ CREAR PEDIDO */
+  const pedidoRes = await fetch("http://localhost:3000/api/ventas", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      direccion: direccion,
+      fechaPedido: new Date().toISOString().slice(0,19).replace("T"," "),
+      detalles: cart.map(p => ({
+        id_producto: p.idProducto,
+        cantidad: p.cantidad
+      }))
+    })
+  });
+
+  if (!pedidoRes.ok) {
+    alert("Error al crear el pedido");
+    return;
+  }
+
+  const pedidoData = await pedidoRes.json();
+  const idPedido = pedidoData.pedido.idPedido;
+
+  /* 2️⃣ REGISTRAR PAGO */
+  const total = cart.reduce((s,p) => s + p.precio * p.cantidad, 0);
+
+  const pagoRes = await fetch("http://localhost:3000/api/pago", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      id_pedido: idPedido,
+      metodo: metodoPago, // efectivo | tarjeta
+      monto: total,
+      fecha: new Date().toISOString().slice(0,19).replace("T"," ")
+    })
+  });
+
+  if (!pagoRes.ok) {
+    alert("El pedido se creó, pero el pago falló");
+    return;
+  }
+
+  /* 3️⃣ LIMPIAR Y MOSTRAR ÉXITO */
+  localStorage.removeItem("mdc_cart");
+  paymentModal.classList.remove("show");
+  successModal.classList.add("show");
+}
+
+/* =========================
+   MÉTODOS DE PAGO
+========================= */
+function payCash() {
+  enviarPedido("efectivo");
+}
+
+function showCard() {
+  cardForm.classList.remove("hidden");
+}
+
+function payCard() {
+  enviarPedido("tarjeta");
+}
+
+/* =========================
+   FINALIZAR
+========================= */
+function finish() {
+  successModal.classList.remove("show");
+  location.href = "catalogo.html";
+}
+
+/* INIT */
+render();
+  

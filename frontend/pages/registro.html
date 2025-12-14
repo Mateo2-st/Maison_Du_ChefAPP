@@ -3,63 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Avanzado</title>
+    <title>Registrarse - Maison Du Chef</title>
     <link rel="stylesheet" href="../css/registro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-      <header class="barraSuperior">
-          <div class="iconoMenu"> 
-              <i class="fa-solid fa-bars"></i>
-            </div>
-            <div class="logo">
-                <img src="../imagenesimagen logo/logo.png" alt="">
-            </div>
-            <div class="cuenta">
-             <a href="../pages/login.html"><i class="fa-solid fa-user"></i> Iniciar Sesión</a>
-        </div>
-    </header>
+<header class="barraSuperior">
+    <div class="iconoMenu"><i class="fa-solid fa-bars"></i></div>
+    <div class="logo"><img src="../imagenes/imagen logo/logo.png" alt=""></div>
+    <div class="cuenta"><a href="../pages/login.html"><i class="fa-solid fa-user"></i> Iniciar Sesión</a></div>
+</header>
 
-    <!--Menu hamburguesa--> 
-    <nav class="menuLateral" id="menu-lateral">
-        <div class="logoMenu">
-            <img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef">
-        </div>
-        <button id="cerrar-menu">&#10006;</button>
-        <ul>
+<nav class="menuLateral" id="menu-lateral">
+    <div class="logoMenu"><img src="../imagenes/imagen logo/logo.png" alt="Maison Du Chef"></div>
+    <button id="cerrar-menu">&#10006;</button>
+    <ul>
+        <li><a href="#">Asistencia al usuario</a></li>
+        <li><a href="#unete">¿Quiénes somos?</a></li>
+    </ul>
+</nav>
 
-            <li><a href="#">Asistencia al usuario</a></li>
-            <li><a href="#unete">¿Quienes somos?</a></li>
-        </ul>
-    </nav>
+<div class="registro">
+    <div class="imagenFondo"><img src="../imagenes/imagen fondo/fondo.jpg"></div>
 
-    
-    <div class="registro">
-        <div class="imagenFondo"><img src="../imagenes/imagen fondo/fondo.jpg"></div>
-        <div class="visual">
-            <form action="../pages/catalogo.html" class="form">
+    <div class="visual">
+        <form id="registerForm" class="form">
             <h1 class="title">Registrarse</h1>
-                <div class="inputContainer">
-                    <input type="text" class="input" placeholder="">
-                    <label class="label">Nombre</label> 
-                </div>
-                <div class="inputContainer">
-                    <input type="email" class="input" placeholder="">
-                    <label class="label">E-mail</label> 
-                </div>
-                <div class="inputContainer">
-                    <input type="password" class="input" placeholder="">
-                    <label class="label">Contraseña</label> 
-                </div>
-                <div class="inputContainer">
-                    <input type="password" class="input" placeholder="">
-                    <label class="label">Confirmar Contraseña</label> 
-                </div>
-                <input type="submit" class="submitBtn" value="Registrarse">
-            </form>
-        </div>
+
+            <div class="inputContainer">
+                <input type="text" id="regNombre" class="input" required>
+                <label class="label">Nombre</label>
+            </div>
+
+            <div class="inputContainer">
+                <input type="email" id="regEmail" class="input" required>
+                <label class="label">E-mail</label>
+            </div>
+
+            <div class="inputContainer">
+                <input type="password" id="regPassword" class="input" required>
+                <label class="label">Contraseña</label>
+            </div>
+
+            <div class="inputContainer">
+                <input type="password" id="regPassword2" class="input" required>
+                <label class="label">Confirmar Contraseña</label>
+            </div>
+
+            <button type="submit" class="submitBtn">Registrarse</button>
+        </form>
     </div>
-    <script src="../js/menu lateral registro/menulateral.js"></script>
+</div>
+
+<script src="../js/menu lateral registro/menulateral.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/app.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nombre = document.getElementById('regNombre').value.trim();
+        const correo = document.getElementById('regEmail').value.trim();
+        const pass1 = document.getElementById('regPassword').value.trim();
+        const pass2 = document.getElementById('regPassword2').value.trim();
+
+        if (pass1 !== pass2) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Las contraseñas no coinciden',
+                text: 'Verifica los dos campos de contraseña.'
+            });
+            return;
+        }
+
+        try {
+            const res = await fetch("http://localhost:3000/api/users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nombre: nombre,
+                    correo: correo,
+                    contrasena: pass1
+                })
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registro exitoso',
+                    text: 'Tu cuenta ha sido creada correctamente'
+                }).then(() => {
+                    window.location.href = 'login.html';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se pudo registrar',
+                    text: result.message
+                });
+            }
+
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo conectar con el servidor'
+            });
+            console.error(err);
+        }
+    });
+});
+</script>
+
 </body>
-</html> 
+</html>

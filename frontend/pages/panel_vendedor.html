@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Vendedor - Maison Du Chef</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/panel_vendedor.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <h2>Vendedor</h2>
+
+    <ul class="admin-menu">
+      <li><a class="active" href="#">Panel Vendedor</a></li>
+    </ul>
+
+    <button id="btnVolver">Volver</button>
+    <button id="btnLogout">Cerrar sesión</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="admin-main">
+    <h1>Panel Vendedor</h1>
+    <p>Gestiona tus productos</p>
+
+    <button id="btnNuevoProducto">+ Nuevo Producto</button>
+
+    <!-- =========================
+         PRODUCTOS
+    ========================= -->
+    <div class="table-wrapper">
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Categoría</th>
+            <th>Restaurante</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- =========================
+         PEDIDOS DEL RESTAURANTE
+    ========================= -->
+    <hr style="margin:40px 0">
+
+    <h2>Pedidos del restaurante</h2>
+
+    <!-- ESTE DIV ES CLAVE -->
+    <div id="listaPedidos" class="pedidos-container">
+      <!-- JS inserta pedidos aquí -->
+    </div>
+
+  </main>
+
+  <!-- MODAL -->
+  <div id="modalProducto" class="modal">
+    <div class="modal-content">
+      <h2 id="modalTitle">Producto</h2>
+
+      <input id="prodNombre" placeholder="Nombre">
+      <input id="prodPrecio" type="number" placeholder="Precio">
+
+      <select id="prodCategoria"></select>
+      <select id="prodRestaurante"></select>
+
+      <button id="guardarProducto">Guardar</button>
+      <button id="cerrarModalProd">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="../js/vendedor/panel_vendedor.js"></script>
+
+</body>
+</html>

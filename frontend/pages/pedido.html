@@ -3,35 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <title>Seguimiento de Pedido</title>
+
   <link rel="stylesheet" href="../css/pedido.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
+
 <body>
 
   <!-- === BARRA SUPERIOR PERSONALIZADA === -->
   <header class="top-header">
     <nav class="top-navbar">
-      <!-- Izquierda: botón hamburguesa / Catálogo -->
+
+      <!-- Izquierda -->
       <div class="left-controls">
         <button class="hamburger-btn" onclick="window.location.href='../pages/maison.html'">
-          <i class="fa-solid fa-angles-left"></i>Catálogo
+          ☰ Catálogo
         </button>
       </div>
 
-      <!-- Derecha: búsqueda, carrito y logout -->
+      <!-- Derecha -->
       <div class="right-controls">
         <input type="text" placeholder="Buscar..." class="search-bar">
 
-        <a href="../pages/carrito.html
-        " class="nav-icon">
+        <a href="../pages/carrito.html" class="nav-icon">
           <i class="fa-solid fa-cart-shopping"></i>
           <span id="cartCountHeader" class="cart-count">0</span>
         </a>
 
-        <a href="../pageslogin.html" class="logout-btn">
+        <a href="#" class="logout-btn" id="btnCerrarSesion">
           <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
         </a>
       </div>
+
     </nav>
   </header>
 
@@ -43,8 +46,63 @@
       <p><strong>Número de pedido:</strong> #123456</p>
       <p><strong>Productos:</strong> Pizza finas hierbas, Granola con Yogur</p>
       <p><strong>Hora de pedido:</strong> 7:45 p.m.</p>
+      <p><strong>Dirección de entrega:</strong> Calle Falsa 123, Ciudad Ejemplo</p>
+      <p><strong>Método de pago:</strong> Tarjeta de crédito</p>
     </div>
 
+    <div class="estado-pedido">
+      <h3>Estado actual:</h3>
+      <ul class="progreso">
+        <li class="activo">📥 Recibido</li>
+        <li class="activo">👨‍🍳 Preparando</li>
+        <li>🚗 En camino</li>
+        <li>✅ Entregado</li>
+      </ul>
+    </div>
+
+    <div class="mapa">
+      <h3>📍 Ubicación aproximada de entrega:</h3>
+      <img src="../imagenes/Pedidos/mapa.jpg" alt="Mapa de entrega" />
+    </div>
+
+    <button onclick="window.location.href='catalogo.html'">← Volver al Catálogo</button>
+  </div>
+
+  <!-- === SCRIPTS === -->
+
   <script src="../js/pedidos/pedido.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../js/app.js"></script>
+
+  <!-- PERMITIR SOLO DOMICILIARIO Y ADMIN -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      protectRoute(['domiciliario', 'admin']);
+    });
+  </script>
+
+  <!-- CERRAR SESIÓN -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("btnCerrarSesion");
+
+      btn.addEventListener("click", () => {
+        Swal.fire({
+          title: "Cerrar sesión",
+          text: "¿Deseas cerrar sesión?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, cerrar",
+          cancelButtonText: "Cancelar"
+        }).then(r => {
+          if (r.isConfirmed) {
+            logoutUser();
+            window.location.href = "login.html";
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>

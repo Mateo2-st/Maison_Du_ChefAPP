@@ -1,4 +1,4 @@
-// controllers/rolController.js
+
 import {
     getAllRoles,
     getRoleById,
