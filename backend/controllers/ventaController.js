@@ -11,7 +11,7 @@ import {
     getPagoByPedido
 } from "../models/ventasModel.js";
 
-/* ----------------------- LISTAR TODOS LOS PEDIDOS ----------------------- */
+// todos los pedidos
 export const listPedidos = async (req, res) => {
     try {
         const pedidos = await getAllPedidos();
@@ -22,7 +22,7 @@ export const listPedidos = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER PEDIDO POR ID ----------------------- */
+// Pedido por id
 export const getPedido = async (req, res) => {
     try {
         const { id } = req.params;
@@ -39,7 +39,7 @@ export const getPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR PEDIDO ----------------------- */
+// crear pedido
 export const addPedido = async (req, res) => {
     try {
         const { id_usuario, direccion, fechaPedido, detalles } = req.body;
@@ -64,7 +64,7 @@ export const addPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR PEDIDO ----------------------- */
+// Actualizar pedido
 export const editPedido = async (req, res) => {
     try {
         const { id } = req.params;
@@ -93,7 +93,7 @@ export const editPedido = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR PEDIDO ----------------------- */
+// eliminar pedido
 export const removePedido = async (req, res) => {
     try {
         const { id } = req.params;
@@ -110,7 +110,7 @@ export const removePedido = async (req, res) => {
     }
 };
 
-/* ----------------------- REGISTRAR PAGO ----------------------- */
+// registro pago
 export const addPago = async (req, res) => {
     try {
         const { id_pedido, metodo, monto, fecha } = req.body;
@@ -127,7 +127,7 @@ export const addPago = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER PAGO POR PEDIDO ----------------------- */
+// obtener pago por pedido
 export const getPago = async (req, res) => {
     try {
         const { id_pedido } = req.params;
