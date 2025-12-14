@@ -15,7 +15,7 @@ const pool = mysql.createPool({
     queueLimit: 0
 }).promise();
 
-// Verificar la conexión
+// Verificar la conexión del .js
 (async () => {
     try {
         const connection = await pool.getConnection();
