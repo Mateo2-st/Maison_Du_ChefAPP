@@ -71,7 +71,7 @@ export const addResena = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR RESEÑA ----------------------- */
+// ACt reseña
 export const editResena = async (req, res) => {
     try {
         const { id } = req.params;
@@ -95,7 +95,7 @@ export const editResena = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR RESEÑA ----------------------- */
+// borrar reseña
 export const removeResena = async (req, res) => {
     try {
         const { id } = req.params;
