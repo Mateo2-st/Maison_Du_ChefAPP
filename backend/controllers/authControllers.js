@@ -11,7 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "2h";
 const SALT_ROUNDS = 10;
 
-/* ----------------------- REGISTRO ----------------------- */
+// Registro
 export const register = async (req, res) => {
     try {
         const { nombre, correo, contrasena, role } = req.body;
@@ -54,7 +54,7 @@ export const register = async (req, res) => {
 };
 
 
-/* ----------------------- LOGIN ----------------------- */
+// Login
 export const login = async (req, res) => {
     try {
         const { correo, contrasena } = req.body;
