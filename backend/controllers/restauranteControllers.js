@@ -1,7 +1,7 @@
 // controllers/restauranteController.js
 import pool from "../db.js";
 
-/* ----------------------- OBTENER TODOS LOS RESTAURANTES ----------------------- */
+// Obtener all restaurantes
 export const listRestaurantes = async (req, res) => {
     try {
         const [rows] = await pool.query(`
@@ -17,7 +17,7 @@ export const listRestaurantes = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER RESTAURANTE POR ID ----------------------- */
+// Obtener restaurante por ID
 export const getRestaurante = async (req, res) => {
     try {
         const { id } = req.params;
@@ -39,7 +39,7 @@ export const getRestaurante = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR RESTAURANTE ----------------------- */
+// Create restaurante
 export const addRestaurante = async (req, res) => {
     try {
         const { nombreRestaurante, direccion, telefono, id_usuario } = req.body;
@@ -68,7 +68,7 @@ export const addRestaurante = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR RESTAURANTE ----------------------- */
+// Actualizar restaurante
 export const editRestaurante = async (req, res) => {
     try {
         const { id } = req.params;
@@ -92,7 +92,7 @@ export const editRestaurante = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR RESTAURANTE ----------------------- */
+// Eliminar restaurante
 export const removeRestaurante = async (req, res) => {
     try {
         const { id } = req.params;
