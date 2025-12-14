@@ -5,7 +5,7 @@ import {
     deleteUser 
 } from "../models/userModels.js";
 
-/* ---------------- PERFIL DEL USUARIO AUTENTICADO ---------------- */
+// usuario autenticado
 export const profile = async (req, res) => {
     try {
         if (!req.user) {
@@ -27,7 +27,7 @@ export const profile = async (req, res) => {
 };
 
 
-/* ---------------- LISTAR TODOS LOS USUARIOS ---------------- */
+// Listar todos los usuarios
 export const listUsers = async (req, res) => {
     try {
         const users = await getAllUsers();
@@ -40,7 +40,7 @@ export const listUsers = async (req, res) => {
 };
 
 
-/* ---------------- ACTUALIZAR USUARIO ---------------- */
+// Act usuario
 export const updateUserController = async (req, res) => {
     try {
         const updated = await updateUser(req.params.id, req.body);
@@ -56,7 +56,7 @@ export const updateUserController = async (req, res) => {
 };
 
 
-/* ---------------- ELIMINAR USUARIO ---------------- */
+// Eliminar usuari
 export const deleteUserController = async (req, res) => {
     try {
         const deleted = await deleteUser(req.params.id);
