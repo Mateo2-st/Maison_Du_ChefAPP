@@ -7,7 +7,7 @@ import {
     deleteRole
 } from "../models/rolModels.js";
 
-/* ----------------------- LISTAR TODOS LOS ROLES ----------------------- */
+// Todos los roles
 export const listRoles = async (req, res) => {
     try {
         const roles = await getAllRoles();
@@ -18,7 +18,7 @@ export const listRoles = async (req, res) => {
     }
 };
 
-/* ----------------------- OBTENER ROL POR ID ----------------------- */
+// Rol por ID
 export const getRole = async (req, res) => {
     try {
         const { id } = req.params;
@@ -35,7 +35,7 @@ export const getRole = async (req, res) => {
     }
 };
 
-/* ----------------------- CREAR ROL ----------------------- */
+// Crear rol
 export const addRole = async (req, res) => {
     try {
         const { nombreRol } = req.body;
@@ -52,7 +52,7 @@ export const addRole = async (req, res) => {
     }
 };
 
-/* ----------------------- ACTUALIZAR ROL ----------------------- */
+// Actualizar rol
 export const editRole = async (req, res) => {
     try {
         const { id } = req.params;
@@ -72,7 +72,7 @@ export const editRole = async (req, res) => {
     }
 };
 
-/* ----------------------- ELIMINAR ROL ----------------------- */
+// Eliminar rol
 export const removeRole = async (req, res) => {
     try {
         const { id } = req.params;
